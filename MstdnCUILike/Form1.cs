@@ -80,7 +80,9 @@ namespace MstdnCUILike {
             string outputText = string.Empty;
 
             // スクロール位置の判定
+            TimeLineBox.Focus();
             var scrollFlg = GetScrollPosition.IsScrollBarEnd(TimeLineBox.Handle, GetScrollPosition.ScrollBarKind.Vertical, TimeLineBox.Height);
+            var point = GetScrollPosition.GetPoint(TimeLineBox.Handle);
 
             outputText += item.Account.DisplayName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
 
@@ -128,8 +130,11 @@ namespace MstdnCUILike {
                 TimeLineBox.SelectionStart = TimeLineBox.Text.Length;
                 TimeLineBox.Focus();
                 TimeLineBox.ScrollToCaret();
-                InputBox.Focus();
+            } else {
+                TimeLineBox.Focus();
+                GetScrollPosition.SetPoint(TimeLineBox.Handle, point);
             }
+            InputBox.Focus();
         }
 
         private void TimeLineBox_LinkClicked(object sender, LinkClickedEventArgs e) {

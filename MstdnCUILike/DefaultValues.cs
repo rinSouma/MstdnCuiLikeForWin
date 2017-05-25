@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MstdnCUILike {
     class DefaultValues {
         public const int MAX_CHARS = 500;
-        public const int SCROLL_SUB = 20;
+        public const int SCROLL_SUB = 40;
         public const string MSG_OK = "OK";
         public const string MSG_CANCEL = "Cancel";
 

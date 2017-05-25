@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,13 +26,21 @@ namespace MstdnCUILike {
             out int lMaximum
         );
 
+        [DllImport("USER32.DLL")]
+        private static extern IntPtr SendMessage(
+            IntPtr hWnd, 
+            Int32 Msg, 
+            Int32 wParam, 
+            out Point lParam
+        );
+
         /// <summary>
         /// スクロール位置が先頭かの判定
         /// </summary>
         /// <param name="handle"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        public static bool IsScrollBarFirst(System.IntPtr handle, ScrollBarKind kind) {
+        public static bool IsScrollBarFirst(IntPtr handle, ScrollBarKind kind) {
             int iMinimum = 0;
             int iMaximum = 0;
 
@@ -54,7 +63,7 @@ namespace MstdnCUILike {
         /// <param name="handle"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        public static bool IsScrollBarEnd(System.IntPtr handle, ScrollBarKind kind, int height) {
+        public static bool IsScrollBarEnd(IntPtr handle, ScrollBarKind kind, int height) {
             int iMinimum = 0;
             int iMaximum = 0;
 
@@ -70,6 +79,26 @@ namespace MstdnCUILike {
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// スクロール位置の取得
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns></returns>
+        public static Point GetPoint(IntPtr handle) {
+            Point point = new Point(0, 0);
+            SendMessage(handle, 0x04DD, 0, out point);
+            return point;
+        }
+
+        /// <summary>
+        /// スクロール位置の設定
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns></returns>
+        public static void SetPoint(IntPtr handle, Point point) {
+            SendMessage(handle, 0x04DE, 0, out point);
         }
     }
 }

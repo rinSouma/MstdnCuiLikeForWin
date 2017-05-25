@@ -77,15 +77,20 @@ namespace MstdnCUILike {
         }
 
         private void TextWrite(Status item) {
-            TimeLineBox.Text += item.Account.DisplayName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
+            string outputText = string.Empty;
+
+            // スクロール位置の判定
+            var scrollFlg = GetScrollPosition.IsScrollBarEnd(TimeLineBox.Handle, GetScrollPosition.ScrollBarKind.Vertical, TimeLineBox.Height);
+
+            outputText += item.Account.DisplayName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
             DateTime outTime = TimeZoneInfo.ConvertTimeFromUtc(item.CreatedAt, tzi);
 
-            TimeLineBox.Text += outTime.ToString("yy/MM/dd HH:mm:ss") + Environment.NewLine;
+            outputText += outTime.ToString("yy/MM/dd HH:mm:ss") + Environment.NewLine;
 
             // HTMLタグの処理
-            string temp = item.Content.Replace(DefaultValues.STREAM_BR, "\n");
+            string temp = item.Content.Replace(DefaultValues.STREAM_BR, Environment.NewLine);
             string patternStr = @"<.*?>";
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 
@@ -94,11 +99,11 @@ namespace MstdnCUILike {
             // 画像の処理
             if (item.MediaAttachments.Count() > 0) {
                 if (item.Sensitive ?? true) {
-                    outImage = "不適切な画像\n";
+                    outImage = "不適切な画像" + Environment.NewLine;
                 }
                 foreach (var media in item.MediaAttachments) {
                     outputString = outputString.Replace(media.TextUrl, "");
-                    outImage += media.TextUrl + "\n";
+                    outImage += media.TextUrl + Environment.NewLine;
                 }
             }
 
@@ -106,6 +111,7 @@ namespace MstdnCUILike {
             outputString = WebUtility.HtmlDecode(outputString);
 
             // 出力
+            TimeLineBox.Text += outputText;
             if (item.SpoilerText != "") {
                 TimeLineBox.Text += item.SpoilerText + Environment.NewLine;
                 TimeLineBox.Text += "非表示のテキスト：" + outputString + Environment.NewLine;
@@ -118,10 +124,12 @@ namespace MstdnCUILike {
             TimeLineBox.Text += Environment.NewLine;
 
             // スクロール
-            TimeLineBox.SelectionStart = TimeLineBox.Text.Length;
-            TimeLineBox.Focus();
-            TimeLineBox.ScrollToCaret();
-            InputBox.Focus();
+            if (scrollFlg) {
+                TimeLineBox.SelectionStart = TimeLineBox.Text.Length;
+                TimeLineBox.Focus();
+                TimeLineBox.ScrollToCaret();
+                InputBox.Focus();
+            }
         }
 
         private void TimeLineBox_LinkClicked(object sender, LinkClickedEventArgs e) {

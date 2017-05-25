@@ -102,6 +102,9 @@ namespace MstdnCUILike {
                 }
             }
 
+            // HTMLデコード
+            outputString = WebUtility.HtmlDecode(outputString);
+
             // 出力
             if (item.SpoilerText != "") {
                 TimeLineBox.Text += item.SpoilerText + Environment.NewLine;

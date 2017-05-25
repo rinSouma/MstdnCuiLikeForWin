@@ -35,6 +35,11 @@
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.ColorSetting = new System.Windows.Forms.Button();
             this.ViewTest = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.NameList = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.NameColorSetting = new System.Windows.Forms.Button();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -79,14 +84,14 @@
             // 
             // UserId
             // 
-            this.UserId.Location = new System.Drawing.Point(88, 9);
+            this.UserId.Location = new System.Drawing.Point(113, 9);
             this.UserId.Name = "UserId";
             this.UserId.Size = new System.Drawing.Size(321, 19);
             this.UserId.TabIndex = 4;
             // 
             // Password
             // 
-            this.Password.Location = new System.Drawing.Point(88, 47);
+            this.Password.Location = new System.Drawing.Point(113, 47);
             this.Password.Name = "Password";
             this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(321, 19);
@@ -94,7 +99,7 @@
             // 
             // FontSetting
             // 
-            this.FontSetting.Location = new System.Drawing.Point(88, 134);
+            this.FontSetting.Location = new System.Drawing.Point(113, 134);
             this.FontSetting.Name = "FontSetting";
             this.FontSetting.Size = new System.Drawing.Size(74, 23);
             this.FontSetting.TabIndex = 7;
@@ -104,7 +109,8 @@
             // 
             // Save
             // 
-            this.Save.Location = new System.Drawing.Point(334, 160);
+            this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Save.Location = new System.Drawing.Point(392, 257);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
             this.Save.TabIndex = 8;
@@ -114,7 +120,7 @@
             // 
             // ColorSetting
             // 
-            this.ColorSetting.Location = new System.Drawing.Point(87, 90);
+            this.ColorSetting.Location = new System.Drawing.Point(113, 90);
             this.ColorSetting.Name = "ColorSetting";
             this.ColorSetting.Size = new System.Drawing.Size(75, 23);
             this.ColorSetting.TabIndex = 9;
@@ -124,17 +130,57 @@
             // ViewTest
             // 
             this.ViewTest.AutoSize = true;
-            this.ViewTest.Location = new System.Drawing.Point(188, 139);
+            this.ViewTest.Location = new System.Drawing.Point(209, 139);
             this.ViewTest.Name = "ViewTest";
             this.ViewTest.Size = new System.Drawing.Size(29, 12);
             this.ViewTest.TabIndex = 10;
             this.ViewTest.Text = "見本";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label5.Location = new System.Drawing.Point(12, 180);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(86, 15);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "特別なユーザ";
+            // 
+            // NameList
+            // 
+            this.NameList.Location = new System.Drawing.Point(113, 180);
+            this.NameList.Name = "NameList";
+            this.NameList.Size = new System.Drawing.Size(321, 19);
+            this.NameList.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label6.Location = new System.Drawing.Point(14, 227);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "文字色";
+            // 
+            // NameColorSetting
+            // 
+            this.NameColorSetting.Location = new System.Drawing.Point(112, 225);
+            this.NameColorSetting.Name = "NameColorSetting";
+            this.NameColorSetting.Size = new System.Drawing.Size(75, 23);
+            this.NameColorSetting.TabIndex = 14;
+            this.NameColorSetting.UseVisualStyleBackColor = true;
+            this.NameColorSetting.Click += new System.EventHandler(this.NameColorSetting_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 195);
+            this.ClientSize = new System.Drawing.Size(475, 292);
+            this.Controls.Add(this.NameColorSetting);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.NameList);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.ViewTest);
             this.Controls.Add(this.ColorSetting);
             this.Controls.Add(this.Save);
@@ -166,5 +212,10 @@
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.Button ColorSetting;
         private System.Windows.Forms.Label ViewTest;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox NameList;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button NameColorSetting;
+        private System.Windows.Forms.ColorDialog colorDialog2;
     }
 }

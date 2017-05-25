@@ -16,19 +16,22 @@ namespace MstdnCUILike {
             if (Properties.Settings.Default.HostName == "") {
                 ColorSetting.BackColor = Color.Black;
                 ViewTest.ForeColor = Color.White;
+                NameColorSetting.BackColor = Color.Red;
             } else {
                 ColorSetting.BackColor = Properties.Settings.Default.BackColorSetting;
                 ViewTest.Font = Properties.Settings.Default.FontSetting;
                 ViewTest.ForeColor = Properties.Settings.Default.FontColorSetting;
+                NameColorSetting.BackColor = Properties.Settings.Default.NameColor;
             }
             UserId.Text = Properties.Settings.Default.UserID;
             Password.Text = Properties.Settings.Default.UserPass;
+            NameList.Text = Properties.Settings.Default.NameList;
 
         }
 
         private void Save_Click(object sender, EventArgs e) {
             if(UserId.Text == "" || Password.Text == "") {
-                MessageBox.Show("全て入力必須＞＜");
+                MessageBox.Show("ID/パスワード入力必須＞＜");
                 return;
             }
 
@@ -38,6 +41,8 @@ namespace MstdnCUILike {
             Properties.Settings.Default["UserID"] = UserId.Text;
             Properties.Settings.Default["UserPass"] = Password.Text;
             Properties.Settings.Default["HostName"] = DefaultValues.MSTDN_HOST;
+            Properties.Settings.Default["NameList"] = NameList.Text;
+            Properties.Settings.Default["NameColor"] = NameColorSetting.BackColor;
             Properties.Settings.Default.Save();
             this.Close();
 
@@ -61,6 +66,15 @@ namespace MstdnCUILike {
             if (colorDialog1.ShowDialog() == DialogResult.OK) {
                 //選択された色の取得
                 ColorSetting.BackColor = colorDialog1.Color;
+            }
+        }
+
+        private void NameColorSetting_Click(object sender, EventArgs e) {
+            colorDialog2.Color = NameColorSetting.BackColor;
+            DialogResult cd = colorDialog2.ShowDialog();
+            if (colorDialog2.ShowDialog() == DialogResult.OK) {
+                //選択された色の取得
+                NameColorSetting.BackColor = colorDialog2.Color;
             }
         }
     }

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="BackColorSetting" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Black</Value>
     </Setting>
     <Setting Name="FontSetting" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)" />
@@ -25,6 +25,12 @@
     </Setting>
     <Setting Name="HostName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NameList" Type="System.String" Scope="User">
+      <Value Profile="(Default)">a_nick_w;retia_jp</Value>
+    </Setting>
+    <Setting Name="NameColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
     </Setting>
   </Settings>
 </SettingsFile>

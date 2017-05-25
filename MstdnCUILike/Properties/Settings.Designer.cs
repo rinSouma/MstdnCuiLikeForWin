@@ -25,6 +25,7 @@ namespace MstdnCUILike.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
         public global::System.Drawing.Color BackColorSetting {
             get {
                 return ((global::System.Drawing.Color)(this["BackColorSetting"]));
@@ -113,6 +114,30 @@ namespace MstdnCUILike.Properties {
             }
             set {
                 this["HostName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("a_nick_w;retia_jp")]
+        public string NameList {
+            get {
+                return ((string)(this["NameList"]));
+            }
+            set {
+                this["NameList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color NameColor {
+            get {
+                return ((global::System.Drawing.Color)(this["NameColor"]));
+            }
+            set {
+                this["NameColor"] = value;
             }
         }
     }

@@ -78,6 +78,7 @@ namespace MstdnCUILike {
 
         private void TextWrite(Status item) {
             string outputText = string.Empty;
+            int start = TimeLineBox.TextLength;
 
             // スクロール位置の判定
             TimeLineBox.Focus();
@@ -112,18 +113,29 @@ namespace MstdnCUILike {
             // HTMLデコード
             outputString = WebUtility.HtmlDecode(outputString);
 
-            // 出力
-            TimeLineBox.Text += outputText;
             if (item.SpoilerText != "") {
-                TimeLineBox.Text += item.SpoilerText + Environment.NewLine;
-                TimeLineBox.Text += "非表示のテキスト：" + outputString + Environment.NewLine;
+                outputText += item.SpoilerText + Environment.NewLine;
+                outputText += "非表示のテキスト：" + outputString + Environment.NewLine;
             } else {
-                TimeLineBox.Text += outputString + Environment.NewLine;
+                outputText += outputString + Environment.NewLine;
             }
             if (outImage != "") {
-                TimeLineBox.Text += outImage + Environment.NewLine;
+                outputText += outImage + Environment.NewLine;
             }
-            TimeLineBox.Text += Environment.NewLine;
+            outputText += Environment.NewLine;
+
+            // 出力
+            TimeLineBox.Select(TimeLineBox.TextLength, 0);
+            TimeLineBox.SelectedText = outputText;
+
+            SetColor(start);
+
+            // 行数が多いと不安定になるので古いものを削除する
+            while (TimeLineBox.GetLineFromCharIndex(TimeLineBox.TextLength) > DefaultValues.MAX_ROWS) {
+                List<string> lines = new List<string>(TimeLineBox.Lines);
+                lines.RemoveAt(0);
+                TimeLineBox.Text = String.Join(Environment.NewLine, lines);
+            }
 
             // スクロール
             if (scrollFlg) {
@@ -184,6 +196,21 @@ namespace MstdnCUILike {
             InputBox.BackColor = Properties.Settings.Default.BackColorSetting;
             InputBox.Focus();
             Run();
+        }
+
+        // 特定ユーザのNameの色を変える
+        private void SetColor(int start) {
+            var list = Properties.Settings.Default.NameList.Split(';');
+            foreach(var name in list) {
+                var target = "@" + name + " ";
+                var cnt = TimeLineBox.Find(target, start, RichTextBoxFinds.MatchCase);
+                if(cnt >= 0) {
+                    TimeLineBox.SelectionStart = cnt;
+                    TimeLineBox.SelectionLength = name.Length + 1;
+                    TimeLineBox.SelectionColor = Properties.Settings.Default.NameColor;
+                    break;
+                }
+            }
         }
     }
 }

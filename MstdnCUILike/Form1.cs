@@ -78,7 +78,6 @@ namespace MstdnCUILike {
 
         private void TextWrite(Status item) {
             string outputText = string.Empty;
-            int start = TimeLineBox.TextLength;
 
             // スクロール位置の判定
             TimeLineBox.Focus();
@@ -128,14 +127,14 @@ namespace MstdnCUILike {
             TimeLineBox.Select(TimeLineBox.TextLength, 0);
             TimeLineBox.SelectedText = outputText;
 
-            SetColor(start);
-
             // 行数が多いと不安定になるので古いものを削除する
-            while (TimeLineBox.GetLineFromCharIndex(TimeLineBox.TextLength) > DefaultValues.MAX_ROWS) {
+            while (TimeLineBox.GetLineFromCharIndex(TimeLineBox.TextLength) > Properties.Settings.Default.MaxLine) {
                 List<string> lines = new List<string>(TimeLineBox.Lines);
                 lines.RemoveAt(0);
                 TimeLineBox.Text = String.Join(Environment.NewLine, lines);
             }
+
+            SetColor(0);
 
             // スクロール
             if (scrollFlg) {
@@ -203,12 +202,16 @@ namespace MstdnCUILike {
             var list = Properties.Settings.Default.NameList.Split(';');
             foreach(var name in list) {
                 var target = "@" + name + " ";
-                var cnt = TimeLineBox.Find(target, start, RichTextBoxFinds.MatchCase);
-                if(cnt >= 0) {
-                    TimeLineBox.SelectionStart = cnt;
-                    TimeLineBox.SelectionLength = name.Length + 1;
-                    TimeLineBox.SelectionColor = Properties.Settings.Default.NameColor;
-                    break;
+                int cnt = start - 1;
+                while (true) {
+                    cnt = TimeLineBox.Find(target, cnt + 1, RichTextBoxFinds.MatchCase);
+                    if (cnt >= 0) {
+                        TimeLineBox.SelectionStart = cnt;
+                        TimeLineBox.SelectionLength = name.Length + 1;
+                        TimeLineBox.SelectionColor = Properties.Settings.Default.NameColor;
+                    } else {
+                        break;
+                    }
                 }
             }
         }

@@ -140,5 +140,17 @@ namespace MstdnCUILike.Properties {
                 this["NameColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        public int MaxLine {
+            get {
+                return ((int)(this["MaxLine"]));
+            }
+            set {
+                this["MaxLine"] = value;
+            }
+        }
     }
 }

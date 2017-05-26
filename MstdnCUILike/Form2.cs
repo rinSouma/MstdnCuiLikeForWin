@@ -26,12 +26,18 @@ namespace MstdnCUILike {
             UserId.Text = Properties.Settings.Default.UserID;
             Password.Text = Properties.Settings.Default.UserPass;
             NameList.Text = Properties.Settings.Default.NameList;
+            MaxLine.Text = Properties.Settings.Default.MaxLine.ToString();
 
         }
 
         private void Save_Click(object sender, EventArgs e) {
             if(UserId.Text == "" || Password.Text == "") {
                 MessageBox.Show("ID/パスワード入力必須＞＜");
+                return;
+            }
+            int maxline = 0;
+            if (!int.TryParse(MaxLine.Text, out maxline)) {
+                MessageBox.Show("行数は数字のみ！");
                 return;
             }
 
@@ -43,6 +49,7 @@ namespace MstdnCUILike {
             Properties.Settings.Default["HostName"] = DefaultValues.MSTDN_HOST;
             Properties.Settings.Default["NameList"] = NameList.Text;
             Properties.Settings.Default["NameColor"] = NameColorSetting.BackColor;
+            Properties.Settings.Default["MaxLine"] = maxline;
             Properties.Settings.Default.Save();
             this.Close();
 

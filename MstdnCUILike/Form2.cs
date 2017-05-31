@@ -27,7 +27,8 @@ namespace MstdnCUILike {
             Password.Text = Properties.Settings.Default.UserPass;
             NameList.Text = Properties.Settings.Default.NameList;
             MaxLine.Text = Properties.Settings.Default.MaxLine.ToString();
-
+            BaseWord.Text = Properties.Settings.Default.BaseWord;
+            TootWord.Text = Properties.Settings.Default.TootWord;
         }
 
         private void Save_Click(object sender, EventArgs e) {
@@ -50,6 +51,8 @@ namespace MstdnCUILike {
             Properties.Settings.Default["NameList"] = NameList.Text;
             Properties.Settings.Default["NameColor"] = NameColorSetting.BackColor;
             Properties.Settings.Default["MaxLine"] = maxline;
+            Properties.Settings.Default["BaseWord"] = BaseWord.Text;
+            Properties.Settings.Default["TootWord"] = TootWord.Text;
             Properties.Settings.Default.Save();
             this.Close();
 

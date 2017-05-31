@@ -152,5 +152,29 @@ namespace MstdnCUILike.Properties {
                 this["MaxLine"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("マック")]
+        public string BaseWord {
+            get {
+                return ((string)(this["BaseWord"]));
+            }
+            set {
+                this["BaseWord"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("マークードー")]
+        public string TootWord {
+            get {
+                return ((string)(this["TootWord"]));
+            }
+            set {
+                this["TootWord"] = value;
+            }
+        }
     }
 }

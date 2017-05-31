@@ -29,7 +29,7 @@ namespace MstdnCUILike {
 
         private void Form1_Shown(object sender, EventArgs e) {
             // 初期設定していない場合は設定画面を呼び出し
-            if(Properties.Settings.Default.HostName == "") {
+            if (Properties.Settings.Default.HostName == "") {
                 Form2 fm2 = new Form2();
                 var rtn = fm2.ShowDialog(this);
             }
@@ -146,6 +146,12 @@ namespace MstdnCUILike {
                 GetScrollPosition.SetPoint(TimeLineBox.Handle, point);
             }
             InputBox.Focus();
+
+
+            // 特定ワードに反応して特定ワードをトゥートする
+
+            TootWord(outputString);
+
         }
 
         private void TimeLineBox_LinkClicked(object sender, LinkClickedEventArgs e) {
@@ -153,15 +159,15 @@ namespace MstdnCUILike {
         }
 
         private void InputBox_KeyDown(object sender, KeyEventArgs e) {
-            if(e.KeyCode == Keys.Enter && (e.Modifiers & Keys.Control) == Keys.Control) {
+            if (e.KeyCode == Keys.Enter && (e.Modifiers & Keys.Control) == Keys.Control) {
                 // 設定画面起動コマンド
                 if (InputBox.Text.IndexOf(DefaultValues.CMD_SETTING) == 0) {
                     Form2 fm2 = new Form2();
                     var rtn = fm2.ShowDialog(this);
 
                     ChangeSettings();
-                // 終了コマンド
-                }else if (InputBox.Text.IndexOf(DefaultValues.CMD_END) == 0) {
+                    // 終了コマンド
+                } else if (InputBox.Text.IndexOf(DefaultValues.CMD_END) == 0) {
                     this.Close();
                 } else {
                     // トゥートする
@@ -180,7 +186,7 @@ namespace MstdnCUILike {
         }
 
         private void ChangeSettings() {
-            if(streaming != null) {
+            if (streaming != null) {
                 streaming.Stop();
             }
             hostName = Properties.Settings.Default.HostName;
@@ -200,7 +206,7 @@ namespace MstdnCUILike {
         // 特定ユーザのNameの色を変える
         private void SetColor(int start) {
             var list = Properties.Settings.Default.NameList.Split(';');
-            foreach(var name in list) {
+            foreach (var name in list) {
                 var target = "@" + name + " ";
                 int cnt = start - 1;
                 while (true) {
@@ -212,6 +218,22 @@ namespace MstdnCUILike {
                     } else {
                         break;
                     }
+                }
+            }
+        }
+
+        // 特定ワードに反応して特定ワードをトゥートする
+        private void TootWord(string str) {
+            var wordlist = Properties.Settings.Default.BaseWord.Split(';');
+            var tootlist = Properties.Settings.Default.TootWord.Split(';');
+            var i = 0;
+            foreach (var word in wordlist) {
+                if(i >= tootlist.Count()) {
+                    break;
+                }
+                if(str.IndexOf(word) >= 0) {
+                    // トゥートする
+                    var status = client.PostStatus(tootlist[i], Visibility.Public);
                 }
             }
         }

@@ -43,6 +43,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.MaxLine = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.BaseWord = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.TootWord = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -113,7 +117,7 @@
             // Save
             // 
             this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Save.Location = new System.Drawing.Point(392, 327);
+            this.Save.Location = new System.Drawing.Point(392, 420);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
             this.Save.TabIndex = 8;
@@ -202,11 +206,49 @@
             this.label8.TabIndex = 17;
             this.label8.Text = "行";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label9.Location = new System.Drawing.Point(13, 335);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 15);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "コール";
+            // 
+            // BaseWord
+            // 
+            this.BaseWord.Location = new System.Drawing.Point(112, 335);
+            this.BaseWord.Name = "BaseWord";
+            this.BaseWord.Size = new System.Drawing.Size(321, 19);
+            this.BaseWord.TabIndex = 19;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label10.Location = new System.Drawing.Point(14, 385);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(63, 15);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "レスポンス";
+            // 
+            // TootWord
+            // 
+            this.TootWord.Location = new System.Drawing.Point(112, 385);
+            this.TootWord.Name = "TootWord";
+            this.TootWord.Size = new System.Drawing.Size(321, 19);
+            this.TootWord.TabIndex = 21;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 362);
+            this.ClientSize = new System.Drawing.Size(475, 455);
+            this.Controls.Add(this.TootWord);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.BaseWord);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.MaxLine);
             this.Controls.Add(this.label7);
@@ -253,5 +295,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox MaxLine;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox BaseWord;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox TootWord;
     }
 }

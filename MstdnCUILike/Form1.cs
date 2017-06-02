@@ -19,6 +19,7 @@ namespace MstdnCUILike {
         private string pass;
         private string clientId = Properties.Settings.Default.AppID;
         private string clientSecret = Properties.Settings.Default.AppSecret;
+        private string userId = string.Empty;
 
         private TimelineStreaming streaming;
         private MastodonClient client;
@@ -63,6 +64,9 @@ namespace MstdnCUILike {
             var auth = await authClient.ConnectWithPassword(mail, pass);
 
             client = new MastodonClient(appRegistration, auth);
+
+            var account = await client.GetCurrentUser();
+            this.userId = account.AccountName;
 
             streaming = client.GetPublicStreaming();
             streaming.OnUpdate += (sender, e) => {
@@ -156,7 +160,7 @@ namespace MstdnCUILike {
             InputBox.Focus();
 
             // 特定ワードに反応して特定ワードをトゥートする
-            TootWord(outputString);
+            TootWord(outputString, item.Account.AccountName);
 
         }
 
@@ -210,7 +214,7 @@ namespace MstdnCUILike {
             Run();
         }
 
-        // 特定ユーザのNameの色を変える
+        // 特定ユーザの色を変える
         private void SetColor(int row, string target) {
             var list = Properties.Settings.Default.NameList.Split(';');
             foreach (var name in list) {
@@ -221,7 +225,12 @@ namespace MstdnCUILike {
         }
 
         // 特定ワードに反応して特定ワードをトゥートする
-        private void TootWord(string str) {
+        private void TootWord(string str, string user) {
+            // 自分のトゥートには反応しない
+            if(user == this.userId) {
+                return;
+            }
+
             var wordlist = Properties.Settings.Default.BaseWord.Split(';');
             var tootlist = Properties.Settings.Default.TootWord.Split(';');
             var i = 0;

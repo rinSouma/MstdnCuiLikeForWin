@@ -130,7 +130,7 @@ namespace MstdnCUILike {
             if (outImage != "") {
                 outputText += outImage + Environment.NewLine;
             }
-            outputText += Environment.NewLine;
+            //outputText += Environment.NewLine;
 
             // 出力
             var i = TimeLineView.Rows.Count;
@@ -209,6 +209,8 @@ namespace MstdnCUILike {
             this.BackColor = Properties.Settings.Default.BackColorSetting;
             TimeLineView.BackgroundColor = Properties.Settings.Default.BackColorSetting;
             TimeLineView.DefaultCellStyle.BackColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.DefaultCellStyle.SelectionBackColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.DefaultCellStyle.SelectionForeColor = Properties.Settings.Default.FontColorSetting;
             InputBox.BackColor = Properties.Settings.Default.BackColorSetting;
             InputBox.Focus();
             Run();

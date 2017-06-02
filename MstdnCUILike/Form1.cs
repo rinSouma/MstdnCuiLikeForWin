@@ -23,8 +23,18 @@ namespace MstdnCUILike {
         private TimelineStreaming streaming;
         private MastodonClient client;
 
+        private int scrollPoint = int.MinValue;
         public MstdnCUILike() {
             InitializeComponent();
+
+            // 表示領域の設定
+            TimeLineView.ColumnHeadersVisible = false;
+            TimeLineView.RowHeadersVisible = false;
+            TimeLineView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            TimeLineView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            TimeLineView.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            TimeLineView.BorderStyle = BorderStyle.None;
+            TimeLineView.CellBorderStyle = DataGridViewCellBorderStyle.None;
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
@@ -79,11 +89,6 @@ namespace MstdnCUILike {
         private void TextWrite(Status item) {
             string outputText = string.Empty;
 
-            // スクロール位置の判定
-            TimeLineBox.Focus();
-            var scrollFlg = GetScrollPosition.IsScrollBarEnd(TimeLineBox.Handle, GetScrollPosition.ScrollBarKind.Vertical, TimeLineBox.Height);
-            var point = GetScrollPosition.GetPoint(TimeLineBox.Handle);
-
             outputText += item.Account.DisplayName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
@@ -124,32 +129,33 @@ namespace MstdnCUILike {
             outputText += Environment.NewLine;
 
             // 出力
-            TimeLineBox.Select(TimeLineBox.TextLength, 0);
-            TimeLineBox.SelectedText = outputText;
+            var i = TimeLineView.Rows.Count;
+            TimeLineView.Rows.Add();
+            TimeLineView.Rows[i].Cells[0].Value = outputText;
+            TimeLineView.Rows[i].Selected = false;
+
+            // スクロール位置の調整
+            if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
+                TimeLineView.FirstDisplayedScrollingRowIndex = i;
+                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+            }
 
             // 行数が多いと不安定になるので古いものを削除する
-            while (TimeLineBox.GetLineFromCharIndex(TimeLineBox.TextLength) > Properties.Settings.Default.MaxLine) {
-                List<string> lines = new List<string>(TimeLineBox.Lines);
-                lines.RemoveAt(0);
-                TimeLineBox.Text = String.Join(Environment.NewLine, lines);
+            while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
+                TimeLineView.Rows.RemoveAt(0);
+                TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
+                if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
+                    scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+                }
             }
 
-            SetColor(0);
+            // 特定ユーザの場合色を変える
+            SetColor(i, item.Account.AccountName);
 
-            // スクロール
-            if (scrollFlg) {
-                TimeLineBox.SelectionStart = TimeLineBox.Text.Length;
-                TimeLineBox.Focus();
-                TimeLineBox.ScrollToCaret();
-            } else {
-                TimeLineBox.Focus();
-                GetScrollPosition.SetPoint(TimeLineBox.Handle, point);
-            }
+            // 入力欄にフォーカス
             InputBox.Focus();
 
-
             // 特定ワードに反応して特定ワードをトゥートする
-
             TootWord(outputString);
 
         }
@@ -192,32 +198,24 @@ namespace MstdnCUILike {
             hostName = Properties.Settings.Default.HostName;
             mail = Properties.Settings.Default.UserID;
             pass = Properties.Settings.Default.UserPass;
-            TimeLineBox.Font = Properties.Settings.Default.FontSetting;
-            TimeLineBox.ForeColor = Properties.Settings.Default.FontColorSetting;
+            TimeLineView.DefaultCellStyle.Font = Properties.Settings.Default.FontSetting;
+            TimeLineView.DefaultCellStyle.ForeColor = Properties.Settings.Default.FontColorSetting;
             InputBox.Font = Properties.Settings.Default.FontSetting;
             InputBox.ForeColor = Properties.Settings.Default.FontColorSetting;
             this.BackColor = Properties.Settings.Default.BackColorSetting;
-            TimeLineBox.BackColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.BackgroundColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.DefaultCellStyle.BackColor = Properties.Settings.Default.BackColorSetting;
             InputBox.BackColor = Properties.Settings.Default.BackColorSetting;
             InputBox.Focus();
             Run();
         }
 
         // 特定ユーザのNameの色を変える
-        private void SetColor(int start) {
+        private void SetColor(int row, string target) {
             var list = Properties.Settings.Default.NameList.Split(';');
             foreach (var name in list) {
-                var target = "@" + name + " ";
-                int cnt = start - 1;
-                while (true) {
-                    cnt = TimeLineBox.Find(target, cnt + 1, RichTextBoxFinds.MatchCase);
-                    if (cnt >= 0) {
-                        TimeLineBox.SelectionStart = cnt;
-                        TimeLineBox.SelectionLength = name.Length + 1;
-                        TimeLineBox.SelectionColor = Properties.Settings.Default.NameColor;
-                    } else {
-                        break;
-                    }
+                if(name == target) {
+                    TimeLineView.Rows[row].Cells[0].Style.ForeColor = Properties.Settings.Default.NameColor;
                 }
             }
         }

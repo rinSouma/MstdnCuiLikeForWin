@@ -25,13 +25,15 @@
         private void InitializeComponent() {
             System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MstdnCUILike));
-            this.TimeLineBox = new System.Windows.Forms.RichTextBox();
             this.InputBox = new System.Windows.Forms.TextBox();
+            this.TimeLineView = new System.Windows.Forms.DataGridView();
+            this.View = new System.Windows.Forms.DataGridViewTextBoxColumn();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeLineView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -45,7 +47,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(this.TimeLineBox);
+            splitContainer1.Panel1.Controls.Add(this.TimeLineView);
             // 
             // splitContainer1.Panel2
             // 
@@ -53,23 +55,6 @@
             splitContainer1.Size = new System.Drawing.Size(398, 614);
             splitContainer1.SplitterDistance = 480;
             splitContainer1.TabIndex = 3;
-            // 
-            // TimeLineBox
-            // 
-            this.TimeLineBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TimeLineBox.BackColor = System.Drawing.Color.Black;
-            this.TimeLineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.TimeLineBox.CausesValidation = false;
-            this.TimeLineBox.ForeColor = System.Drawing.SystemColors.Menu;
-            this.TimeLineBox.Location = new System.Drawing.Point(0, 0);
-            this.TimeLineBox.Name = "TimeLineBox";
-            this.TimeLineBox.ReadOnly = true;
-            this.TimeLineBox.Size = new System.Drawing.Size(398, 471);
-            this.TimeLineBox.TabIndex = 1;
-            this.TimeLineBox.Text = "";
-            this.TimeLineBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.TimeLineBox_LinkClicked);
             // 
             // InputBox
             // 
@@ -88,6 +73,29 @@
             this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
             this.InputBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyUp);
             // 
+            // TimeLineView
+            // 
+            this.TimeLineView.AllowUserToAddRows = false;
+            this.TimeLineView.AllowUserToDeleteRows = false;
+            this.TimeLineView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TimeLineView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TimeLineView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.View});
+            this.TimeLineView.Location = new System.Drawing.Point(0, 0);
+            this.TimeLineView.Name = "TimeLineView";
+            this.TimeLineView.ReadOnly = true;
+            this.TimeLineView.RowTemplate.Height = 21;
+            this.TimeLineView.Size = new System.Drawing.Size(395, 472);
+            this.TimeLineView.TabIndex = 0;
+            // 
+            // View
+            // 
+            this.View.HeaderText = "";
+            this.View.Name = "View";
+            this.View.ReadOnly = true;
+            // 
             // MstdnCUILike
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -104,13 +112,15 @@
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
             splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TimeLineView)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.TextBox InputBox;
-        private System.Windows.Forms.RichTextBox TimeLineBox;
+        private System.Windows.Forms.DataGridView TimeLineView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn View;
     }
 }
 

@@ -102,6 +102,7 @@ namespace MstdnCUILike {
 
             // HTMLタグの処理
             string temp = item.Content.Replace(DefaultValues.STREAM_BR, Environment.NewLine);
+            temp = temp.Replace(DefaultValues.STREAM_DOUBLEBR, Environment.NewLine + Environment.NewLine);
             string patternStr = @"<.*?>";
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 

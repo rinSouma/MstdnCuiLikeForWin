@@ -39,6 +39,7 @@ namespace MstdnCUILike {
 
         public const string STREAM_TAG = "tag";
         public const string STREAM_BR = "<br />";
+        public const string STREAM_DOUBLEBR = "</p><p>";
 
         public const string MSG_OPPAI = "おっぱい";
         public const string MSG_MER = "マー";

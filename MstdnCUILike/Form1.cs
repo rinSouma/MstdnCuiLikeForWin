@@ -138,19 +138,22 @@ namespace MstdnCUILike {
             TimeLineView.Rows[i].Cells[0].Value = outputText;
             TimeLineView.Rows[i].Selected = false;
 
+            // 行数が多いと不安定になるので古いものを削除する
+            while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
+                TimeLineView.Rows.RemoveAt(0);
+                if(TimeLineView.FirstDisplayedScrollingRowIndex > 0) {
+                    TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
+                    if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
+                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+                    }
+                }
+                i--;
+            }
+
             // スクロール位置の調整
             if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
                 TimeLineView.FirstDisplayedScrollingRowIndex = i;
                 scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
-            }
-
-            // 行数が多いと不安定になるので古いものを削除する
-            while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
-                TimeLineView.Rows.RemoveAt(0);
-                TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
-                if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
-                    scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
-                }
             }
 
             // 特定ユーザの場合色を変える

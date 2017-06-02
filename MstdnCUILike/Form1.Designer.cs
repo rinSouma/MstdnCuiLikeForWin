@@ -25,9 +25,9 @@
         private void InitializeComponent() {
             System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MstdnCUILike));
-            this.InputBox = new System.Windows.Forms.TextBox();
             this.TimeLineView = new System.Windows.Forms.DataGridView();
             this.View = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InputBox = new System.Windows.Forms.TextBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -56,23 +56,6 @@
             splitContainer1.SplitterDistance = 480;
             splitContainer1.TabIndex = 3;
             // 
-            // InputBox
-            // 
-            this.InputBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.InputBox.BackColor = System.Drawing.Color.Black;
-            this.InputBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.InputBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.InputBox.Location = new System.Drawing.Point(0, 2);
-            this.InputBox.MaxLength = 500;
-            this.InputBox.Multiline = true;
-            this.InputBox.Name = "InputBox";
-            this.InputBox.Size = new System.Drawing.Size(395, 125);
-            this.InputBox.TabIndex = 2;
-            this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
-            this.InputBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyUp);
-            // 
             // TimeLineView
             // 
             this.TimeLineView.AllowUserToAddRows = false;
@@ -95,6 +78,23 @@
             this.View.HeaderText = "";
             this.View.Name = "View";
             this.View.ReadOnly = true;
+            // 
+            // InputBox
+            // 
+            this.InputBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.InputBox.BackColor = System.Drawing.Color.Black;
+            this.InputBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.InputBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.InputBox.Location = new System.Drawing.Point(0, 2);
+            this.InputBox.MaxLength = 500;
+            this.InputBox.Multiline = true;
+            this.InputBox.Name = "InputBox";
+            this.InputBox.Size = new System.Drawing.Size(395, 125);
+            this.InputBox.TabIndex = 2;
+            this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
+            this.InputBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyUp);
             // 
             // MstdnCUILike
             // 

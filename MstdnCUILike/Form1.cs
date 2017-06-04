@@ -20,6 +20,7 @@ namespace MstdnCUILike {
         private string clientId = Properties.Settings.Default.AppID;
         private string clientSecret = Properties.Settings.Default.AppSecret;
         private string userId = string.Empty;
+        private int tootsCounter = 0;
 
         private TimelineStreaming streaming;
         private MastodonClient client;
@@ -87,6 +88,15 @@ namespace MstdnCUILike {
                 }
             };
 
+            Timer timer = new Timer();
+            timer.Interval = DefaultValues.TOOTS_INTERVAL;
+            timer.Tick += (object sender, EventArgs e) => {
+                // トゥート回数のリセット
+                tootsCounter = 0;
+            };
+            timer.Start();
+
+
             streaming.Start();
         }
 
@@ -102,6 +112,7 @@ namespace MstdnCUILike {
 
             // HTMLタグの処理
             string temp = item.Content.Replace(DefaultValues.STREAM_BR, Environment.NewLine);
+            temp = temp.Replace(DefaultValues.STREAM_DOUBLEBR, Environment.NewLine + Environment.NewLine);
             string patternStr = @"<.*?>";
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 
@@ -130,7 +141,7 @@ namespace MstdnCUILike {
             if (outImage != "") {
                 outputText += outImage + Environment.NewLine;
             }
-            outputText += Environment.NewLine;
+            //outputText += Environment.NewLine;
 
             // 出力
             var i = TimeLineView.Rows.Count;
@@ -138,19 +149,22 @@ namespace MstdnCUILike {
             TimeLineView.Rows[i].Cells[0].Value = outputText;
             TimeLineView.Rows[i].Selected = false;
 
-            // スクロール位置の調整
-            if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
-                TimeLineView.FirstDisplayedScrollingRowIndex = i;
-                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
-            }
-
             // 行数が多いと不安定になるので古いものを削除する
             while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
                 TimeLineView.Rows.RemoveAt(0);
-                TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
-                if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
-                    scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+                if(TimeLineView.FirstDisplayedScrollingRowIndex > 0) {
+                    TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
+                    if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
+                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
+                    }
                 }
+                i--;
+            }
+
+            // スクロール位置の調整
+            if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
+                TimeLineView.FirstDisplayedScrollingRowIndex = i;
+                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
             }
 
             // 特定ユーザの場合色を変える
@@ -181,7 +195,7 @@ namespace MstdnCUILike {
                     this.Close();
                 } else {
                     // トゥートする
-                    var status = client.PostStatus(InputBox.Text, Visibility.Public);
+                    this.PostStatus(InputBox.Text, Visibility.Public);
                 }
                 InputBox.Text = "";
             }
@@ -189,8 +203,8 @@ namespace MstdnCUILike {
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter && (e.Modifiers & Keys.Control) == Keys.Control) {
-                var status = client.PostStatus(InputBox.Text, Visibility.Public);
-                status = client.GetStatus(status.Id);
+                //var status = client.PostStatus(InputBox.Text, Visibility.Public);
+                //status = client.GetStatus(status.Id);
                 InputBox.Text = "";
             }
         }
@@ -209,6 +223,8 @@ namespace MstdnCUILike {
             this.BackColor = Properties.Settings.Default.BackColorSetting;
             TimeLineView.BackgroundColor = Properties.Settings.Default.BackColorSetting;
             TimeLineView.DefaultCellStyle.BackColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.DefaultCellStyle.SelectionBackColor = Properties.Settings.Default.BackColorSetting;
+            TimeLineView.DefaultCellStyle.SelectionForeColor = Properties.Settings.Default.FontColorSetting;
             InputBox.BackColor = Properties.Settings.Default.BackColorSetting;
             InputBox.Focus();
             Run();
@@ -240,8 +256,17 @@ namespace MstdnCUILike {
                 }
                 if(str.IndexOf(word) >= 0) {
                     // トゥートする
-                    var status = client.PostStatus(tootlist[i], Visibility.Public);
+                    this.PostStatus(tootlist[i], Visibility.Public);
                 }
+                i++;
+            }
+        }
+
+        // トゥート処理
+        private void PostStatus(string word, Visibility visibility) {
+            if(this.tootsCounter < DefaultValues.TOOTS_PAR_INTERVAL) {
+                var status = client.PostStatus(word, visibility);
+                tootsCounter++;
             }
         }
     }

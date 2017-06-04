@@ -9,6 +9,8 @@ namespace MstdnCUILike {
         public const int MAX_CHARS = 500;
         public const int SCROLL_SUB = 40;
         public const int MAX_ROWS = 1000;
+        public const int TOOTS_PAR_INTERVAL = 5;
+        public const int TOOTS_INTERVAL = 30000;
 
         public const string MSG_OK = "OK";
         public const string MSG_CANCEL = "Cancel";
@@ -39,6 +41,7 @@ namespace MstdnCUILike {
 
         public const string STREAM_TAG = "tag";
         public const string STREAM_BR = "<br />";
+        public const string STREAM_DOUBLEBR = "</p><p>";
 
         public const string MSG_OPPAI = "おっぱい";
         public const string MSG_MER = "マー";

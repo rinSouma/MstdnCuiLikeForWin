@@ -23,11 +23,13 @@
         /// コード エディターで変更しないでください。
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MstdnCUILike));
             this.TimeLineView = new System.Windows.Forms.DataGridView();
             this.View = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.InputBox = new System.Windows.Forms.TextBox();
+            this.gridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -72,6 +74,7 @@
             this.TimeLineView.RowTemplate.Height = 21;
             this.TimeLineView.Size = new System.Drawing.Size(395, 472);
             this.TimeLineView.TabIndex = 0;
+            this.TimeLineView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.TimeLineView_CellMouseClick);
             // 
             // View
             // 
@@ -95,6 +98,11 @@
             this.InputBox.TabIndex = 2;
             this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
             this.InputBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyUp);
+            // 
+            // gridContextMenu
+            // 
+            this.gridContextMenu.Name = "gridContextMenu";
+            this.gridContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // MstdnCUILike
             // 
@@ -121,6 +129,7 @@
         private System.Windows.Forms.TextBox InputBox;
         private System.Windows.Forms.DataGridView TimeLineView;
         private System.Windows.Forms.DataGridViewTextBoxColumn View;
+        private System.Windows.Forms.ContextMenuStrip gridContextMenu;
     }
 }
 

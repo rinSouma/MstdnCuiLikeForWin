@@ -20,6 +20,7 @@ namespace MstdnCUILike {
         private string clientId = Properties.Settings.Default.AppID;
         private string clientSecret = Properties.Settings.Default.AppSecret;
         private string userId = string.Empty;
+        private int tootsCounter = 0;
 
         private TimelineStreaming streaming;
         private MastodonClient client;
@@ -87,6 +88,15 @@ namespace MstdnCUILike {
                 }
             };
 
+            Timer timer = new Timer();
+            timer.Interval = DefaultValues.TOOTS_INTERVAL;
+            timer.Tick += (object sender, EventArgs e) => {
+                // トゥート回数のリセット
+                tootsCounter = 0;
+            };
+            timer.Start();
+
+
             streaming.Start();
         }
 
@@ -145,7 +155,7 @@ namespace MstdnCUILike {
                 if(TimeLineView.FirstDisplayedScrollingRowIndex > 0) {
                     TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
                     if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
-                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
                     }
                 }
                 i--;
@@ -154,7 +164,7 @@ namespace MstdnCUILike {
             // スクロール位置の調整
             if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
                 TimeLineView.FirstDisplayedScrollingRowIndex = i;
-                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex;
+                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
             }
 
             // 特定ユーザの場合色を変える
@@ -185,7 +195,7 @@ namespace MstdnCUILike {
                     this.Close();
                 } else {
                     // トゥートする
-                    var status = client.PostStatus(InputBox.Text, Visibility.Public);
+                    this.PostStatus(InputBox.Text, Visibility.Public);
                 }
                 InputBox.Text = "";
             }
@@ -193,8 +203,8 @@ namespace MstdnCUILike {
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter && (e.Modifiers & Keys.Control) == Keys.Control) {
-                var status = client.PostStatus(InputBox.Text, Visibility.Public);
-                status = client.GetStatus(status.Id);
+                //var status = client.PostStatus(InputBox.Text, Visibility.Public);
+                //status = client.GetStatus(status.Id);
                 InputBox.Text = "";
             }
         }
@@ -246,8 +256,17 @@ namespace MstdnCUILike {
                 }
                 if(str.IndexOf(word) >= 0) {
                     // トゥートする
-                    var status = client.PostStatus(tootlist[i], Visibility.Public);
+                    this.PostStatus(tootlist[i], Visibility.Public);
                 }
+                i++;
+            }
+        }
+
+        // トゥート処理
+        private void PostStatus(string word, Visibility visibility) {
+            if(this.tootsCounter < DefaultValues.TOOTS_PAR_INTERVAL) {
+                var status = client.PostStatus(word, visibility);
+                tootsCounter++;
             }
         }
     }

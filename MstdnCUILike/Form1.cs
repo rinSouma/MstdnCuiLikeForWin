@@ -117,6 +117,7 @@ namespace MstdnCUILike {
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 
             string outImage = "";
+            string linkText = "";
 
             // 画像の処理
             if (item.MediaAttachments.Count() > 0) {
@@ -126,6 +127,7 @@ namespace MstdnCUILike {
                 foreach (var media in item.MediaAttachments) {
                     outputString = outputString.Replace(media.TextUrl, "");
                     outImage += media.TextUrl + Environment.NewLine;
+                    linkText += media.TextUrl + Environment.NewLine;
                 }
             }
 
@@ -148,6 +150,21 @@ namespace MstdnCUILike {
             TimeLineView.Rows.Add();
             TimeLineView.Rows[i].Cells[0].Value = outputText;
             TimeLineView.Rows[i].Selected = false;
+
+            // リンク用処理
+            int start = 0;
+            while (true) {
+                var reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+                var match = reg.Match(outputString, start);
+
+                if (match.Success == true) {
+                    linkText += match.Value.ToString() + Environment.NewLine;
+                    start = match.Index + match.Length;
+                } else {
+                    break;
+                }
+            }
+            TimeLineView.Rows[i].Cells[0].ToolTipText = linkText;
 
             // 行数が多いと不安定になるので古いものを削除する
             while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
@@ -251,6 +268,9 @@ namespace MstdnCUILike {
             var tootlist = Properties.Settings.Default.TootWord.Split(';');
             var i = 0;
             foreach (var word in wordlist) {
+                if(word.Length <= 0) {
+                    continue;
+                }
                 if(i >= tootlist.Count()) {
                     break;
                 }
@@ -268,6 +288,40 @@ namespace MstdnCUILike {
                 var status = client.PostStatus(word, visibility);
                 tootsCounter++;
             }
+        }
+
+        // 右クリック処理
+        private void TimeLineView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
+            if((e.RowIndex < 0) || (e.ColumnIndex < 0)) {
+                return;
+            }
+            if (e.Button != MouseButtons.Right) {
+                return;
+            }
+
+            var cell = this.TimeLineView[e.ColumnIndex, e.RowIndex];
+            ViewContext(cell);
+        }
+
+        // リンクファイルを開くためのコンテキストメニューを表示
+        private void ViewContext(DataGridViewCell cell) {
+            this.gridContextMenu.Items.Clear();
+            var target = cell.ToolTipText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            
+            foreach(var url in target) {
+                if(url.Length <= 0) {
+                    continue;
+                }
+                this.gridContextMenu.Items.Add(url,null,Context_Click);
+            }
+            if(gridContextMenu.Items.Count > 0) {
+                var point = Cursor.Position;
+                this.gridContextMenu.Show(point);
+            }
+        }
+
+        private void Context_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start(sender.ToString());
         }
     }
 }

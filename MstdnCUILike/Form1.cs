@@ -251,6 +251,9 @@ namespace MstdnCUILike {
             var tootlist = Properties.Settings.Default.TootWord.Split(';');
             var i = 0;
             foreach (var word in wordlist) {
+                if(word.Length <= 0) {
+                    continue;
+                }
                 if(i >= tootlist.Count()) {
                     break;
                 }

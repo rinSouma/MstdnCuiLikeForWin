@@ -38,6 +38,11 @@ namespace MstdnCUILike {
 
         public const string CMD_SETTING = ":setting";
         public const string CMD_END = ":exit";
+        public const string CMD_IMAGE = ":image";
+
+        public const string IMAGE_CMD_NSFW = "/nsfw";
+        public const string IMAGE_CMD_SOURCE = "/s";
+        public const string IMAGE_CMD_STATUS = "/m";
 
         public const string STREAM_TAG = "tag";
         public const string STREAM_BR = "<br />";

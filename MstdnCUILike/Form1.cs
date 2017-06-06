@@ -24,6 +24,7 @@ namespace MstdnCUILike {
 
         private TimelineStreaming streaming;
         private MastodonClient client;
+        private MediaEditClass media;
 
         private int scrollPoint = int.MinValue;
         public MstdnCUILike() {
@@ -88,6 +89,9 @@ namespace MstdnCUILike {
                 }
             };
 
+            // メディア処理用
+            media = new MediaEditClass(ref client);
+
             Timer timer = new Timer();
             timer.Interval = DefaultValues.TOOTS_INTERVAL;
             timer.Tick += (object sender, EventArgs e) => {
@@ -95,7 +99,6 @@ namespace MstdnCUILike {
                 tootsCounter = 0;
             };
             timer.Start();
-
 
             streaming.Start();
         }
@@ -213,6 +216,9 @@ namespace MstdnCUILike {
                     // 終了コマンド
                 } else if (InputBox.Text.IndexOf(DefaultValues.CMD_END) == 0) {
                     this.Close();
+                // 画像アップロード
+                } else if (InputBox.Text.IndexOf(DefaultValues.CMD_IMAGE) == 0) {
+                    PostImage();
                 } else {
                     // トゥートする
                     this.PostStatus(InputBox.Text, Visibility.Public);
@@ -286,11 +292,17 @@ namespace MstdnCUILike {
         }
 
         // トゥート処理
-        private void PostStatus(string word, Visibility visibility) {
+        private void PostStatus(string word, Visibility visibility, int? replyStatusId = default(int?), IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) {
             if(this.tootsCounter < DefaultValues.TOOTS_PAR_INTERVAL) {
-                var status = client.PostStatus(word, visibility);
+                var status = client.PostStatus(word, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
                 tootsCounter++;
             }
+        }
+
+        // トゥート処理（画像）
+        private async Task PostImage() {
+            var mc = await media.AnalysisCommand(InputBox.Text);
+            this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive);
         }
 
         // 右クリック処理

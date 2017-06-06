@@ -166,6 +166,9 @@ namespace MstdnCUILike {
             }
             TimeLineView.Rows[i].Cells[0].ToolTipText = linkText;
 
+            // ステータスＩＤの保存
+            TimeLineView.Rows[i].Cells[0].Tag = item.Id;
+
             // 行数が多いと不安定になるので古いものを削除する
             while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
                 TimeLineView.Rows.RemoveAt(0);
@@ -303,12 +306,27 @@ namespace MstdnCUILike {
             ViewContext(cell);
         }
 
-        // リンクファイルを開くためのコンテキストメニューを表示
+        // コンテキストメニューを表示
         private void ViewContext(DataGridViewCell cell) {
             this.gridContextMenu.Items.Clear();
             var target = cell.ToolTipText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            
-            foreach(var url in target) {
+
+            // ファボ
+            ToolStripItem tsif = new ToolStripMenuItem();
+            tsif.Text = DefaultValues.CONTEXT_FAV;
+            tsif.Tag = cell.Tag;
+            tsif.MouseDown += Fav_MouseDown;
+            this.gridContextMenu.Items.Add(tsif);
+
+            // ブースト
+            ToolStripItem tsib = new ToolStripMenuItem();
+            tsib.Text = DefaultValues.CONTEXT_BOOST;
+            tsib.Tag = cell.Tag;
+            tsib.MouseDown += Boost_MouseDown;
+            this.gridContextMenu.Items.Add(tsib);
+
+            // URLの一覧
+            foreach (var url in target) {
                 if(url.Length <= 0) {
                     continue;
                 }
@@ -320,6 +338,23 @@ namespace MstdnCUILike {
             }
         }
 
+        // ファボクリック
+        private void Fav_MouseDown(object sender, MouseEventArgs e) {
+            var item = (ToolStripItem)sender;
+            int id = 0;
+            if(!int.TryParse(item.Tag.ToString(), out id)) { return; }
+            client.Favourite(id);
+        }
+
+        // ブーストクリック
+        private void Boost_MouseDown(object sender, MouseEventArgs e) {
+            var item = (ToolStripItem)sender;
+            int id = 0;
+            if (!int.TryParse(item.Tag.ToString(), out id)) { return; }
+            client.Reblog(id);
+        }
+
+        // URLクリック
         private void Context_Click(object sender, EventArgs e) {
             System.Diagnostics.Process.Start(sender.ToString());
         }

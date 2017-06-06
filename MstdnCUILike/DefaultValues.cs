@@ -44,10 +44,13 @@ namespace MstdnCUILike {
         public const string IMAGE_CMD_SOURCE = "/s";
         public const string IMAGE_CMD_STATUS = "/m";
 
+        public const string IMAGE_CMD_SHORTCUT = CMD_IMAGE + " " + IMAGE_CMD_NSFW + " " + IMAGE_CMD_SOURCE + " \"\" " + IMAGE_CMD_STATUS + " \"\"";
+
         public const string STREAM_TAG = "tag";
         public const string STREAM_BR = "<br />";
         public const string STREAM_DOUBLEBR = "</p><p>";
 
+        public const string MSG_SPACE = "　";
         public const string MSG_OPPAI = "おっぱい";
         public const string MSG_MER = "マー";
 

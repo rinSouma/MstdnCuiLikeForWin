@@ -216,7 +216,7 @@ namespace MstdnCUILike {
                     // 終了コマンド
                 } else if (InputBox.Text.IndexOf(DefaultValues.CMD_END) == 0) {
                     this.Close();
-                // 画像アップロード
+                    // 画像アップロード
                 } else if (InputBox.Text.IndexOf(DefaultValues.CMD_IMAGE) == 0) {
                     PostImage();
                 } else {
@@ -224,6 +224,11 @@ namespace MstdnCUILike {
                     this.PostStatus(InputBox.Text, Visibility.Public);
                 }
                 InputBox.Text = "";
+            }
+
+            // 画像コマンドショートカット
+            if (e.KeyCode == Keys.Q && (e.Modifiers & Keys.Control) == Keys.Control) {
+                this.InputBox.Text = DefaultValues.IMAGE_CMD_SHORTCUT;
             }
         }
 
@@ -302,6 +307,9 @@ namespace MstdnCUILike {
         // トゥート処理（画像）
         private async Task PostImage() {
             var mc = await media.AnalysisCommand(InputBox.Text);
+            if(mc.mediaId == null) {
+                return;
+            }
             this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive);
         }
 

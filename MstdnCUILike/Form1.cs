@@ -306,11 +306,19 @@ namespace MstdnCUILike {
 
         // トゥート処理（画像）
         private async Task PostImage() {
-            var mc = await media.AnalysisCommand(InputBox.Text);
-            if(mc.mediaId == null) {
-                return;
+            try {
+                var mc = await media.AnalysisCommand(InputBox.Text);
+                if (mc.mediaId == null) {
+                    return;
+                }
+                this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive);
+            } catch (Exception ex) {
+                var i = TimeLineView.Rows.Count;
+                TimeLineView.Rows.Add();
+                TimeLineView.Rows[i].Cells[0].Value = ex.Message;
+                TimeLineView.Rows[i].Selected = false;
+                TimeLineView.Rows[i].Cells[0].Style.ForeColor = Color.Red;
             }
-            this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive);
         }
 
         // 右クリック処理

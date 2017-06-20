@@ -47,6 +47,9 @@
             this.BaseWord = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.TootWord = new System.Windows.Forms.TextBox();
+            this.SelfColorSetting = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.SelfColorDialog = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -91,14 +94,14 @@
             // 
             // UserId
             // 
-            this.UserId.Location = new System.Drawing.Point(113, 9);
+            this.UserId.Location = new System.Drawing.Point(130, 9);
             this.UserId.Name = "UserId";
             this.UserId.Size = new System.Drawing.Size(321, 19);
             this.UserId.TabIndex = 4;
             // 
             // Password
             // 
-            this.Password.Location = new System.Drawing.Point(113, 47);
+            this.Password.Location = new System.Drawing.Point(130, 47);
             this.Password.Name = "Password";
             this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(321, 19);
@@ -106,7 +109,7 @@
             // 
             // FontSetting
             // 
-            this.FontSetting.Location = new System.Drawing.Point(113, 134);
+            this.FontSetting.Location = new System.Drawing.Point(130, 134);
             this.FontSetting.Name = "FontSetting";
             this.FontSetting.Size = new System.Drawing.Size(74, 23);
             this.FontSetting.TabIndex = 7;
@@ -117,7 +120,7 @@
             // Save
             // 
             this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Save.Location = new System.Drawing.Point(392, 420);
+            this.Save.Location = new System.Drawing.Point(392, 483);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
             this.Save.TabIndex = 8;
@@ -127,7 +130,7 @@
             // 
             // ColorSetting
             // 
-            this.ColorSetting.Location = new System.Drawing.Point(113, 90);
+            this.ColorSetting.Location = new System.Drawing.Point(130, 90);
             this.ColorSetting.Name = "ColorSetting";
             this.ColorSetting.Size = new System.Drawing.Size(75, 23);
             this.ColorSetting.TabIndex = 9;
@@ -137,7 +140,7 @@
             // ViewTest
             // 
             this.ViewTest.AutoSize = true;
-            this.ViewTest.Location = new System.Drawing.Point(209, 139);
+            this.ViewTest.Location = new System.Drawing.Point(226, 139);
             this.ViewTest.Name = "ViewTest";
             this.ViewTest.Size = new System.Drawing.Size(29, 12);
             this.ViewTest.TabIndex = 10;
@@ -155,7 +158,7 @@
             // 
             // NameList
             // 
-            this.NameList.Location = new System.Drawing.Point(113, 180);
+            this.NameList.Location = new System.Drawing.Point(130, 180);
             this.NameList.Name = "NameList";
             this.NameList.Size = new System.Drawing.Size(321, 19);
             this.NameList.TabIndex = 12;
@@ -172,7 +175,7 @@
             // 
             // NameColorSetting
             // 
-            this.NameColorSetting.Location = new System.Drawing.Point(112, 225);
+            this.NameColorSetting.Location = new System.Drawing.Point(129, 225);
             this.NameColorSetting.Name = "NameColorSetting";
             this.NameColorSetting.Size = new System.Drawing.Size(75, 23);
             this.NameColorSetting.TabIndex = 14;
@@ -183,7 +186,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label7.Location = new System.Drawing.Point(14, 280);
+            this.label7.Location = new System.Drawing.Point(14, 330);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 15);
             this.label7.TabIndex = 15;
@@ -191,7 +194,7 @@
             // 
             // MaxLine
             // 
-            this.MaxLine.Location = new System.Drawing.Point(112, 280);
+            this.MaxLine.Location = new System.Drawing.Point(129, 330);
             this.MaxLine.Name = "MaxLine";
             this.MaxLine.Size = new System.Drawing.Size(76, 19);
             this.MaxLine.TabIndex = 16;
@@ -200,7 +203,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label8.Location = new System.Drawing.Point(194, 280);
+            this.label8.Location = new System.Drawing.Point(211, 330);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(22, 15);
             this.label8.TabIndex = 17;
@@ -210,7 +213,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label9.Location = new System.Drawing.Point(13, 335);
+            this.label9.Location = new System.Drawing.Point(13, 385);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 15);
             this.label9.TabIndex = 18;
@@ -218,7 +221,7 @@
             // 
             // BaseWord
             // 
-            this.BaseWord.Location = new System.Drawing.Point(112, 335);
+            this.BaseWord.Location = new System.Drawing.Point(129, 385);
             this.BaseWord.Name = "BaseWord";
             this.BaseWord.Size = new System.Drawing.Size(321, 19);
             this.BaseWord.TabIndex = 19;
@@ -227,7 +230,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label10.Location = new System.Drawing.Point(14, 385);
+            this.label10.Location = new System.Drawing.Point(14, 435);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(63, 15);
             this.label10.TabIndex = 20;
@@ -235,16 +238,37 @@
             // 
             // TootWord
             // 
-            this.TootWord.Location = new System.Drawing.Point(112, 385);
+            this.TootWord.Location = new System.Drawing.Point(129, 435);
             this.TootWord.Name = "TootWord";
             this.TootWord.Size = new System.Drawing.Size(321, 19);
             this.TootWord.TabIndex = 21;
+            // 
+            // SelfColorSetting
+            // 
+            this.SelfColorSetting.Location = new System.Drawing.Point(129, 275);
+            this.SelfColorSetting.Name = "SelfColorSetting";
+            this.SelfColorSetting.Size = new System.Drawing.Size(75, 23);
+            this.SelfColorSetting.TabIndex = 23;
+            this.SelfColorSetting.UseVisualStyleBackColor = true;
+            this.SelfColorSetting.Click += new System.EventHandler(this.SelfColorSetting_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("MS UI Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label11.Location = new System.Drawing.Point(13, 271);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(104, 30);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "自身のトゥートの\r\n文字色";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 455);
+            this.ClientSize = new System.Drawing.Size(475, 518);
+            this.Controls.Add(this.SelfColorSetting);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.TootWord);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.BaseWord);
@@ -299,5 +323,8 @@
         private System.Windows.Forms.TextBox BaseWord;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox TootWord;
+        private System.Windows.Forms.Button SelfColorSetting;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ColorDialog SelfColorDialog;
     }
 }

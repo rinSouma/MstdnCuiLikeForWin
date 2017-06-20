@@ -263,6 +263,11 @@ namespace MstdnCUILike {
 
         // 特定ユーザの色を変える
         private void SetColor(int row, string target) {
+            if(target == this.userId) {
+                TimeLineView.Rows[row].Cells[0].Style.ForeColor = Properties.Settings.Default.SelfColor;
+                return;
+            }
+
             var list = Properties.Settings.Default.NameList.Split(';');
             foreach (var name in list) {
                 if(name == target) {

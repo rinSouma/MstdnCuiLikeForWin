@@ -41,5 +41,8 @@
     <Setting Name="TootWord" Type="System.String" Scope="User">
       <Value Profile="(Default)">マークードー</Value>
     </Setting>
+    <Setting Name="SelfColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">SkyBlue</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

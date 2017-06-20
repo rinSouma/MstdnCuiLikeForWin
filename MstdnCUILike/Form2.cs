@@ -17,11 +17,13 @@ namespace MstdnCUILike {
                 ColorSetting.BackColor = Color.Black;
                 ViewTest.ForeColor = Color.White;
                 NameColorSetting.BackColor = Color.Red;
+                SelfColorSetting.BackColor = Color.SkyBlue;
             } else {
                 ColorSetting.BackColor = Properties.Settings.Default.BackColorSetting;
                 ViewTest.Font = Properties.Settings.Default.FontSetting;
                 ViewTest.ForeColor = Properties.Settings.Default.FontColorSetting;
                 NameColorSetting.BackColor = Properties.Settings.Default.NameColor;
+                SelfColorSetting.BackColor = Properties.Settings.Default.SelfColor;
             }
             UserId.Text = Properties.Settings.Default.UserID;
             Password.Text = Properties.Settings.Default.UserPass;
@@ -50,6 +52,7 @@ namespace MstdnCUILike {
             Properties.Settings.Default["HostName"] = DefaultValues.MSTDN_HOST;
             Properties.Settings.Default["NameList"] = NameList.Text;
             Properties.Settings.Default["NameColor"] = NameColorSetting.BackColor;
+            Properties.Settings.Default["SelfColor"] = SelfColorSetting.BackColor;
             Properties.Settings.Default["MaxLine"] = maxline;
             Properties.Settings.Default["BaseWord"] = BaseWord.Text;
             Properties.Settings.Default["TootWord"] = TootWord.Text;
@@ -85,6 +88,15 @@ namespace MstdnCUILike {
             if (colorDialog2.ShowDialog() == DialogResult.OK) {
                 //選択された色の取得
                 NameColorSetting.BackColor = colorDialog2.Color;
+            }
+        }
+
+        private void SelfColorSetting_Click(object sender, EventArgs e) {
+            SelfColorDialog.Color = SelfColorSetting.BackColor;
+            DialogResult cd = SelfColorDialog.ShowDialog();
+            if (SelfColorDialog.ShowDialog() == DialogResult.OK) {
+                //選択された色の取得
+                SelfColorSetting.BackColor = SelfColorDialog.Color;
             }
         }
     }

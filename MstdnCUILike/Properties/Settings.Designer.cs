@@ -176,5 +176,17 @@ namespace MstdnCUILike.Properties {
                 this["TootWord"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBlue")]
+        public global::System.Drawing.Color SelfColor {
+            get {
+                return ((global::System.Drawing.Color)(this["SelfColor"]));
+            }
+            set {
+                this["SelfColor"] = value;
+            }
+        }
     }
 }

@@ -124,7 +124,7 @@ namespace MstdnCUILike {
 
             // 画像の処理
             if (item.MediaAttachments.Count() > 0) {
-                if (item.Sensitive ?? true) {
+                if (item.Sensitive ?? false) {
                     outImage = "不適切な画像" + Environment.NewLine;
                 }
                 foreach (var media in item.MediaAttachments) {
@@ -157,7 +157,7 @@ namespace MstdnCUILike {
             // リンク用処理
             int start = 0;
             while (true) {
-                var reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+                var reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=@]*)?");
                 var match = reg.Match(outputString, start);
 
                 if (match.Success == true) {

@@ -54,7 +54,8 @@ namespace MstdnCUILike {
         public const string MSG_OPPAI = "おっぱい";
         public const string MSG_MER = "マー";
 
-        public const string CONTEXT_FAV = "☆ Fav";
-        public const string CONTEXT_BOOST = "🔄 Boost";
+        public const string CONTEXT_FAV = "Fav";
+        public const string CONTEXT_BOOST = "Boost";
+        public const string CONTEXT_PROFILE = "Profile";
     }
 }

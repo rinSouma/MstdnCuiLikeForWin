@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -26,6 +28,8 @@ namespace MstdnCUILike {
         private MastodonClient client;
         private MediaEditClass media;
 
+        private System.Reflection.Assembly myAssembly;
+
         private int scrollPoint = int.MinValue;
         public MstdnCUILike() {
             InitializeComponent();
@@ -38,6 +42,10 @@ namespace MstdnCUILike {
             TimeLineView.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             TimeLineView.BorderStyle = BorderStyle.None;
             TimeLineView.CellBorderStyle = DataGridViewCellBorderStyle.None;
+
+
+            this.myAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
@@ -120,7 +128,7 @@ namespace MstdnCUILike {
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 
             string outImage = "";
-            string linkText = "";
+            string linkText = item.Account.ProfileUrl + "&" + item.Account.AvatarUrl +  Environment.NewLine;
 
             // 画像の処理
             if (item.MediaAttachments.Count() > 0) {
@@ -343,31 +351,68 @@ namespace MstdnCUILike {
         private void ViewContext(DataGridViewCell cell) {
             this.gridContextMenu.Items.Clear();
             var target = cell.ToolTipText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            try {
+                // ファボ
+                ToolStripItem tsif = new ToolStripMenuItem();
+                tsif.Text = DefaultValues.CONTEXT_FAV;
+                tsif.Tag = cell.Tag;
+                tsif.MouseDown += Fav_MouseDown;
+                tsif.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.fav.png"));
+                this.gridContextMenu.Items.Add(tsif);
 
-            // ファボ
-            ToolStripItem tsif = new ToolStripMenuItem();
-            tsif.Text = DefaultValues.CONTEXT_FAV;
-            tsif.Tag = cell.Tag;
-            tsif.MouseDown += Fav_MouseDown;
-            this.gridContextMenu.Items.Add(tsif);
+                // ブースト
+                ToolStripItem tsib = new ToolStripMenuItem();
+                tsib.Text = DefaultValues.CONTEXT_BOOST;
+                tsib.Tag = cell.Tag;
+                tsib.MouseDown += Boost_MouseDown;
+                tsib.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.boost.png"));
+                this.gridContextMenu.Items.Add(tsib);
 
-            // ブースト
-            ToolStripItem tsib = new ToolStripMenuItem();
-            tsib.Text = DefaultValues.CONTEXT_BOOST;
-            tsib.Tag = cell.Tag;
-            tsib.MouseDown += Boost_MouseDown;
-            this.gridContextMenu.Items.Add(tsib);
+                // URLの一覧
+                int i = 0;
+                foreach (var url in target) {
+                    if (url.Length <= 0) {
+                        continue;
+                    }
+                    // 1件目はプロフィールのURL
+                    if (i == 0) {
+                        var profile = url.Split('&');
+                        Bitmap viewImg = null;
 
-            // URLの一覧
-            foreach (var url in target) {
-                if(url.Length <= 0) {
-                    continue;
+                        // 画像ダウンロード
+                        WebClient cl = new WebClient();
+                        byte[] pic = cl.DownloadData(profile[1]);
+                        MemoryStream st = new MemoryStream(pic);
+                        Image img = new Bitmap(st);
+
+                        // アニメーション画像は最初の1フレームだけ取得する
+                        var fd = new FrameDimension(img.FrameDimensionsList[0]);
+                        int frameCount = img.GetFrameCount(fd);
+                        if(frameCount > 1) {
+                            img.SelectActiveFrame(fd, 0);
+                        }
+                        viewImg = new Bitmap(img);
+
+                        ToolStripItem tsip = new ToolStripMenuItem();
+                        tsip.Text = DefaultValues.CONTEXT_PROFILE;
+                        tsip.Tag = profile[0];
+                        tsip.MouseDown += Profile_MouseDown;
+                        tsip.Image = viewImg;
+                        this.gridContextMenu.Items.Add(tsip);
+                        i = 1;
+                        st.Close();
+                        continue;
+                    }
+                    this.gridContextMenu.Items.Add(url, null, Context_Click);
                 }
-                this.gridContextMenu.Items.Add(url,null,Context_Click);
-            }
-            if(gridContextMenu.Items.Count > 0) {
-                var point = Cursor.Position;
-                this.gridContextMenu.Show(point);
+                if (gridContextMenu.Items.Count > 0) {
+                    var point = Cursor.Position;
+                    this.gridContextMenu.Show(point);
+                    this.gridContextMenu.ImageScalingSize = new Size(24, 24);
+                }
+
+            } catch (Exception e) {
+                return;
             }
         }
 
@@ -385,6 +430,12 @@ namespace MstdnCUILike {
             int id = 0;
             if (!int.TryParse(item.Tag.ToString(), out id)) { return; }
             client.Reblog(id);
+        }
+
+        // Profileクリック
+        private void Profile_MouseDown(object sender, MouseEventArgs e) {
+            var item = (ToolStripItem)sender;
+            System.Diagnostics.Process.Start(item.Tag.ToString());
         }
 
         // URLクリック

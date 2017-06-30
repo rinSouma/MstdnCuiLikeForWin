@@ -224,5 +224,43 @@ namespace MstdnCUILike.Properties {
                 this["SpliterDistance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>F1;</string>
+  <string>F2;</string>
+  <string>F3;</string>
+  <string>F4;</string>
+  <string>F5;</string>
+  <string>F6;</string>
+  <string>F7;</string>
+  <string>F8;</string>
+  <string>F9;</string>
+  <string>F10;</string>
+  <string>F11;</string>
+  <string>F12;</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection Shortcat {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Shortcat"]));
+            }
+            set {
+                this["Shortcat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting {
+            get {
+                return ((string)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
+            }
+        }
     }
 }

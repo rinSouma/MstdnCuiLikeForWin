@@ -53,5 +53,25 @@
     <Setting Name="SpliterDistance" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">480</Value>
     </Setting>
+    <Setting Name="Shortcat" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;F1;&lt;/string&gt;
+  &lt;string&gt;F2;&lt;/string&gt;
+  &lt;string&gt;F3;&lt;/string&gt;
+  &lt;string&gt;F4;&lt;/string&gt;
+  &lt;string&gt;F5;&lt;/string&gt;
+  &lt;string&gt;F6;&lt;/string&gt;
+  &lt;string&gt;F7;&lt;/string&gt;
+  &lt;string&gt;F8;&lt;/string&gt;
+  &lt;string&gt;F9;&lt;/string&gt;
+  &lt;string&gt;F10;&lt;/string&gt;
+  &lt;string&gt;F11;&lt;/string&gt;
+  &lt;string&gt;F12;&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

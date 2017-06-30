@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace MstdnCUILike {
     public partial class MstdnCUILike : Form {
@@ -30,6 +31,8 @@ namespace MstdnCUILike {
 
         private System.Reflection.Assembly myAssembly;
 
+        private Dictionary<string, string> shortcat;
+
         private int scrollPoint = int.MinValue;
         public MstdnCUILike() {
             InitializeComponent();
@@ -42,10 +45,9 @@ namespace MstdnCUILike {
             TimeLineView.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             TimeLineView.BorderStyle = BorderStyle.None;
             TimeLineView.CellBorderStyle = DataGridViewCellBorderStyle.None;
-
-
             this.myAssembly = System.Reflection.Assembly.GetExecutingAssembly();
 
+            shortcat = new Dictionary<string, string>();
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
@@ -58,6 +60,7 @@ namespace MstdnCUILike {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             // 設定を反映
             ChangeSettings();
+            SetShortcat();
         }
 
         private async Task Run() {
@@ -227,16 +230,33 @@ namespace MstdnCUILike {
                     // 画像アップロード
                 } else if (InputBox.Text.IndexOf(DefaultValues.CMD_IMAGE) == 0) {
                     PostImage();
+                    // ショートカット
+                } else if (InputBox.Text.IndexOf(DefaultValues.CMD_SHORTCAT) == 0) {
+                    Form3 fm3 = new Form3();
+                    var rtn = fm3.ShowDialog(this);
+
+                    SetShortcat();
                 } else {
                     // トゥートする
                     this.PostStatus(InputBox.Text, Visibility.Public);
                 }
                 InputBox.Text = "";
-            }
-
-            // 画像コマンドショートカット
-            if (e.KeyCode == Keys.Q && (e.Modifiers & Keys.Control) == Keys.Control) {
+            } else if (e.KeyCode >= Keys.F1 && e.KeyCode <= Keys.F12) {
+                ShortcatKey(e.KeyCode.ToString());
+                // 画像コマンドショートカット
+            } else if (e.KeyCode == Keys.Q && (e.Modifiers & Keys.Control) == Keys.Control) {
                 this.InputBox.Text = DefaultValues.IMAGE_CMD_SHORTCUT;
+                // すべて選択
+            } else if (e.KeyCode == Keys.A && (e.Modifiers & Keys.Control) == Keys.Control) {
+                InputBox.SelectionStart = 0;
+                InputBox.SelectionLength = InputBox.TextLength;
+            }
+        }
+
+        private void ShortcatKey(string key) {
+            if (shortcat.ContainsKey(key)) {
+                this.InputBox.SelectedText = shortcat[key];
+                this.InputBox.SelectionStart = this.InputBox.TextLength;
             }
         }
 
@@ -441,6 +461,35 @@ namespace MstdnCUILike {
         // URLクリック
         private void Context_Click(object sender, EventArgs e) {
             System.Diagnostics.Process.Start(sender.ToString());
+        }
+
+        private void MstdnCUILike_Load(object sender, EventArgs e) {
+            // ウィンドウの位置・サイズを復元
+            Bounds = Properties.Settings.Default.Bounds;
+            WindowState = Properties.Settings.Default.WindowState;
+            splitContainer1.SplitterDistance = Properties.Settings.Default.SpliterDistance;
+        }
+
+        private void MstdnCUILike_FormClosing(object sender, FormClosingEventArgs e) {
+            // ウィンドウの位置・サイズを保存
+            if (WindowState == FormWindowState.Normal) {
+                Properties.Settings.Default.Bounds = Bounds;
+            } else {
+                Properties.Settings.Default.Bounds = RestoreBounds;
+            }
+
+            Properties.Settings.Default.WindowState = WindowState;
+            Properties.Settings.Default.SpliterDistance = splitContainer1.SplitterDistance;
+            Properties.Settings.Default.Save();
+        }
+
+        private void SetShortcat() {
+            var list = Properties.Settings.Default.Shortcat;
+            shortcat.Clear();
+            foreach (string str in list) {
+                var item = str.Split(';');
+                shortcat.Add(item[0], item[1]);
+            }
         }
     }
 }

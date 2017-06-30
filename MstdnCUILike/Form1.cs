@@ -241,13 +241,15 @@ namespace MstdnCUILike {
                     this.PostStatus(InputBox.Text, Visibility.Public);
                 }
                 InputBox.Text = "";
-            } else if(e.KeyCode >= Keys.F1 && e.KeyCode <= Keys.F12) {
+            } else if (e.KeyCode >= Keys.F1 && e.KeyCode <= Keys.F12) {
                 ShortcatKey(e.KeyCode.ToString());
-            }
-
-            // 画像コマンドショートカット
-            if (e.KeyCode == Keys.Q && (e.Modifiers & Keys.Control) == Keys.Control) {
+                // 画像コマンドショートカット
+            } else if (e.KeyCode == Keys.Q && (e.Modifiers & Keys.Control) == Keys.Control) {
                 this.InputBox.Text = DefaultValues.IMAGE_CMD_SHORTCUT;
+                // すべて選択
+            } else if (e.KeyCode == Keys.A && (e.Modifiers & Keys.Control) == Keys.Control) {
+                InputBox.SelectionStart = 0;
+                InputBox.SelectionLength = InputBox.TextLength;
             }
         }
 

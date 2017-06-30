@@ -188,5 +188,41 @@ namespace MstdnCUILike.Properties {
                 this["SelfColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100, 100, 400, 600")]
+        public global::System.Drawing.Rectangle Bounds {
+            get {
+                return ((global::System.Drawing.Rectangle)(this["Bounds"]));
+            }
+            set {
+                this["Bounds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public global::System.Windows.Forms.FormWindowState WindowState {
+            get {
+                return ((global::System.Windows.Forms.FormWindowState)(this["WindowState"]));
+            }
+            set {
+                this["WindowState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("480")]
+        public int SpliterDistance {
+            get {
+                return ((int)(this["SpliterDistance"]));
+            }
+            set {
+                this["SpliterDistance"] = value;
+            }
+        }
     }
 }

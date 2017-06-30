@@ -442,6 +442,26 @@ namespace MstdnCUILike {
         private void Context_Click(object sender, EventArgs e) {
             System.Diagnostics.Process.Start(sender.ToString());
         }
+
+        private void MstdnCUILike_Load(object sender, EventArgs e) {
+            // ウィンドウの位置・サイズを復元
+            Bounds = Properties.Settings.Default.Bounds;
+            WindowState = Properties.Settings.Default.WindowState;
+            splitContainer1.SplitterDistance = Properties.Settings.Default.SpliterDistance;
+        }
+
+        private void MstdnCUILike_FormClosing(object sender, FormClosingEventArgs e) {
+            // ウィンドウの位置・サイズを保存
+            if (WindowState == FormWindowState.Normal) {
+                Properties.Settings.Default.Bounds = Bounds;
+            } else {
+                Properties.Settings.Default.Bounds = RestoreBounds;
+            }
+
+            Properties.Settings.Default.WindowState = WindowState;
+            Properties.Settings.Default.SpliterDistance = splitContainer1.SplitterDistance;
+            Properties.Settings.Default.Save();
+        }
     }
 }
 

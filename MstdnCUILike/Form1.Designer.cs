@@ -24,39 +24,38 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MstdnCUILike));
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.TimeLineView = new System.Windows.Forms.DataGridView();
             this.View = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.InputBox = new System.Windows.Forms.TextBox();
             this.gridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeLineView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
-            splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            splitContainer1.Location = new System.Drawing.Point(4, 5);
-            splitContainer1.Name = "splitContainer1";
-            splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainer1.Location = new System.Drawing.Point(4, 5);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(this.TimeLineView);
+            this.splitContainer1.Panel1.Controls.Add(this.TimeLineView);
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(this.InputBox);
-            splitContainer1.Size = new System.Drawing.Size(398, 614);
-            splitContainer1.SplitterDistance = 480;
-            splitContainer1.TabIndex = 3;
+            this.splitContainer1.Panel2.Controls.Add(this.InputBox);
+            this.splitContainer1.Size = new System.Drawing.Size(398, 614);
+            this.splitContainer1.SplitterDistance = 480;
+            this.splitContainer1.TabIndex = 3;
             // 
             // TimeLineView
             // 
@@ -110,16 +109,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(405, 622);
-            this.Controls.Add(splitContainer1);
+            this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MstdnCUILike";
             this.Text = "MstdnCUILike";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MstdnCUILike_FormClosing);
+            this.Load += new System.EventHandler(this.MstdnCUILike_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel2.ResumeLayout(false);
-            splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
-            splitContainer1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TimeLineView)).EndInit();
             this.ResumeLayout(false);
 
@@ -130,6 +131,7 @@
         private System.Windows.Forms.DataGridView TimeLineView;
         private System.Windows.Forms.DataGridViewTextBoxColumn View;
         private System.Windows.Forms.ContextMenuStrip gridContextMenu;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 

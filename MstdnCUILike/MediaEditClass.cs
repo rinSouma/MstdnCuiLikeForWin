@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
 using System.Text;
 using System;
+using Mastonet.Entities;
 
 namespace MstdnCUILike {
     class MediaEditClass {
@@ -20,8 +21,8 @@ namespace MstdnCUILike {
         }
 
         // メディアアップロード処理
-        public async Task<IEnumerable<int>> UploadMedia(List<string> pathList) {
-            List<int> idList = new List<int>();
+        public async Task<IEnumerable<Attachment>> UploadMedia(List<string> pathList) {
+            List<Attachment> attachList = new List<Attachment>();
             if(pathList.Count >= 5) {
                 throw new Exception("投稿できる画像は４つまで");
             }
@@ -36,12 +37,12 @@ namespace MstdnCUILike {
                         throw new Exception("画像のアップロードに失敗");
                     }
 
-                    idList.Add(attatch.Id);
+                    attachList.Add(attatch);
                 } catch (Exception ex) {
                     throw ex;
                 }
             }
-            return idList;
+            return attachList;
         }
 
         // コマンド解析処理
@@ -78,13 +79,19 @@ namespace MstdnCUILike {
                         pathList.Add(param);
                         break;
                     case Flg.Status:
-                        mc.status = param;
+                        mc.status = param + Environment.NewLine;
                         break;
                 }
             }
             // メディアアップロード
             try {
-                mc.mediaId = await UploadMedia(pathList);
+                var attachList = await UploadMedia(pathList);
+                var idList = new List<int>();
+                foreach(Attachment attach in attachList) {
+                    idList.Add(attach.Id);
+                    mc.status += attach.TextUrl + Environment.NewLine;
+                }
+                mc.mediaId = idList;
             } catch (Exception ex) {
                 throw ex;
             }

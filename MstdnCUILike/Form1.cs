@@ -116,8 +116,9 @@ namespace MstdnCUILike {
 
         private void TextWrite(Status item) {
             string outputText = string.Empty;
+            string viewName = item.Account.DisplayName.Replace("\n", "").Replace("\r", "");
 
-            outputText += item.Account.DisplayName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
+            outputText += viewName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
             DateTime outTime = TimeZoneInfo.ConvertTimeFromUtc(item.CreatedAt, tzi);

@@ -400,6 +400,10 @@ namespace MstdnCUILike {
                         Bitmap viewImg = null;
 
                         // 画像ダウンロード
+                        if(profile[1].IndexOf("https://") < 0) {
+                            profile[1] = "https://" + hostName + profile[1];
+                        }
+
                         WebClient cl = new WebClient();
                         byte[] pic = cl.DownloadData(profile[1]);
                         MemoryStream st = new MemoryStream(pic);

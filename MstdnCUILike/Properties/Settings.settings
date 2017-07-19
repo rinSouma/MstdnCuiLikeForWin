@@ -70,8 +70,20 @@
   &lt;string&gt;F12;&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="NoticeFav" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NoticeBoost" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NoticeMention" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NoticeFollow" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NoticeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Yellow</Value>
     </Setting>
   </Settings>
 </SettingsFile>

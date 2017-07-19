@@ -35,6 +35,18 @@ namespace MstdnCUILike {
         public const string MSTDN_STMLTLPATH = "/api/v1/streaming/public";
         public const string MSTDN_IMGPATH = "/media";
         public const string MSTDN_SCOPE = "read write";
+        public const string MSTDN_FAV = "favourite";
+        public const string MSTDN_BOOST = "reblog";
+        public const string MSTDN_MENTION = "mention";
+        public const string MSTDN_FOLLOW = "follow";
+        public const string MSTDN_PUBLIC = "public";
+        public const string MSTDN_UNLIST = "unlisted";
+        public const string MSTDN_PRIVATE = "private";
+        public const string MSTDN_DIRECT = "direct";
+        public const string MSTDN_V_PUBLIC = "公開";
+        public const string MSTDN_V_UNLIST = "未収載";
+        public const string MSTDN_V_PRIVATE = "非公開";
+        public const string MSTDN_V_DIRECT = "ダイレクト";
 
         public const string CMD_SETTING = ":setting";
         public const string CMD_END = ":exit";

@@ -26,6 +26,7 @@ namespace MstdnCUILike {
         private int tootsCounter = 0;
 
         private TimelineStreaming streaming;
+        private TimelineStreaming homeStreaming;
         private MastodonClient client;
         private MediaEditClass media;
 
@@ -81,6 +82,7 @@ namespace MstdnCUILike {
             var account = await client.GetCurrentUser();
             this.userId = account.AccountName;
 
+            // LTL処理
             streaming = client.GetPublicStreaming();
             streaming.OnUpdate += (sender, e) => {
                 // 自インスタンスのみを表示の対象にする
@@ -100,6 +102,12 @@ namespace MstdnCUILike {
                 }
             };
 
+            //通知処理
+            homeStreaming = client.GetUserStreaming();
+            homeStreaming.OnNotification += (sender, e) => {
+                NotificationWrite(e.Notification);
+            };
+
             // メディア処理用
             media = new MediaEditClass(ref client);
 
@@ -112,13 +120,97 @@ namespace MstdnCUILike {
             timer.Start();
 
             streaming.Start();
+            homeStreaming.Start();
         }
 
-        private void TextWrite(Status item) {
-            string outputText = string.Empty;
+        // 通知出力処理
+        private void NotificationWrite(Notification item) {
+            string header = string.Empty;
             string viewName = item.Account.DisplayName.Replace("\n", "").Replace("\r", "");
+            viewName = viewName + "@" + item.Account.AccountName;
+            int i = 0;
+            int id = 0;
+            string outputText = string.Empty;
+            string outputString = string.Empty;
+            string linkText = string.Empty;
+            bool flg = true;
 
-            outputText += viewName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
+            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            DateTime outTime = TimeZoneInfo.ConvertTimeFromUtc(item.CreatedAt, tzi);
+            linkText = item.Account.ProfileUrl + "&" + item.Account.AvatarUrl + Environment.NewLine;
+
+            switch (item.Type.ToLower()) {
+                case DefaultValues.MSTDN_FAV:
+                    if (!Properties.Settings.Default.NoticeFav) { return; }
+                    header = viewName + "がお気に入りに登録 " + outTime + Environment.NewLine;
+                    break;
+                case DefaultValues.MSTDN_BOOST:
+                    if (!Properties.Settings.Default.NoticeBoost) { return; }
+                    header = viewName + "がブースト " + outTime + Environment.NewLine;
+                    break;
+                case DefaultValues.MSTDN_MENTION:
+                    if (!Properties.Settings.Default.NoticeMention) { return; }
+                    header = viewName + "からのメンション（" + GetVisibility(item.Status.Visibility.ToString()) + "） " + outTime + Environment.NewLine;
+                    // 返信の場合は元トゥートのURLをつける
+                    if(item.Status.InReplyToId != null) {
+                        linkText += "https://" + hostName + "/web/statuses/" + item.Status.InReplyToId;
+                    }
+                    id = item.Status.Id;
+                    break;
+                case DefaultValues.MSTDN_FOLLOW:
+                    if (!Properties.Settings.Default.NoticeFollow) { return; }
+                    outputText = viewName + "がフォローしてきた " + outTime + Environment.NewLine;
+                    flg = false;
+                    break;
+            }
+
+            // 編集
+            if (flg) {
+                // 成形
+                outputText = header + Molding(item.Status, out outputString, ref linkText);
+                
+                // 出力
+                i = WriteConsole(outputText, id);
+
+                // リンク用処理
+                int start = 0;
+                while (true) {
+                    var reg = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=@]*)?");
+                    var match = reg.Match(outputString, start);
+
+                    if (match.Success == true) {
+                        linkText += match.Value.ToString() + Environment.NewLine;
+                        start = match.Index + match.Length;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                // 出力
+                i = WriteConsole(outputText, id);
+            }
+
+            TimeLineView.Rows[i].Cells[0].ToolTipText = linkText;
+            TimeLineView.Rows[i].Cells[0].Style.ForeColor = Properties.Settings.Default.NoticeColor;
+        }
+
+        private string GetVisibility(string visibility) {
+            switch (visibility.ToLower()) {
+                case DefaultValues.MSTDN_PUBLIC:
+                    return DefaultValues.MSTDN_V_PUBLIC;
+                case DefaultValues.MSTDN_UNLIST:
+                    return DefaultValues.MSTDN_V_UNLIST;
+                case DefaultValues.MSTDN_PRIVATE:
+                    return DefaultValues.MSTDN_V_PRIVATE;
+                case DefaultValues.MSTDN_DIRECT:
+                    return DefaultValues.MSTDN_V_DIRECT;
+            }
+            return "";
+        }
+
+        // 成形処理
+        private string Molding(Status item, out string status, ref string link) {
+            string outputText = string.Empty;
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
             DateTime outTime = TimeZoneInfo.ConvertTimeFromUtc(item.CreatedAt, tzi);
@@ -132,7 +224,7 @@ namespace MstdnCUILike {
             string outputString = Regex.Replace(temp, patternStr, string.Empty);
 
             string outImage = "";
-            string linkText = item.Account.ProfileUrl + "&" + item.Account.AvatarUrl +  Environment.NewLine;
+            string linkText = link;
 
             // 画像の処理
             if (item.MediaAttachments.Count() > 0) {
@@ -160,11 +252,58 @@ namespace MstdnCUILike {
             }
             //outputText += Environment.NewLine;
 
+            status = outputString;
+            link = linkText;
+            return outputText;
+        }
+
+        // 出力処理
+        private int WriteConsole(string text, int id) {
             // 出力
             var i = TimeLineView.Rows.Count;
             TimeLineView.Rows.Add();
-            TimeLineView.Rows[i].Cells[0].Value = outputText;
+            TimeLineView.Rows[i].Cells[0].Value = text;
             TimeLineView.Rows[i].Selected = false;
+
+            // ステータスＩＤの保存
+            TimeLineView.Rows[i].Cells[0].Tag = id;
+
+            // 行数が多いと不安定になるので古いものを削除する
+            while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
+                TimeLineView.Rows.RemoveAt(0);
+                if (TimeLineView.FirstDisplayedScrollingRowIndex > 0) {
+                    TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
+                    if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
+                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
+                    }
+                }
+                i--;
+            }
+
+            // スクロール位置の調整
+            if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
+                TimeLineView.FirstDisplayedScrollingRowIndex = i;
+                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
+            }
+
+            return i;
+        }
+
+        // LTL出力処理
+        private void TextWrite(Status item) {
+            string outputText = string.Empty;
+            string outputString = string.Empty;
+            string linkText = string.Empty;
+            string viewName = item.Account.DisplayName.Replace("\n", "").Replace("\r", "");
+
+            outputText += viewName + "@" + item.Account.AccountName + "  " + item.Account.StatusesCount + "回目のトゥート" + Environment.NewLine;
+
+            // 本文の成型
+            linkText = item.Account.ProfileUrl + "&" + item.Account.AvatarUrl + Environment.NewLine;
+            outputText += Molding(item, out outputString, ref linkText);
+
+            // 出力
+            int i = WriteConsole(outputText, item.Id);
 
             // リンク用処理
             int start = 0;
@@ -181,27 +320,6 @@ namespace MstdnCUILike {
             }
             TimeLineView.Rows[i].Cells[0].ToolTipText = linkText;
 
-            // ステータスＩＤの保存
-            TimeLineView.Rows[i].Cells[0].Tag = item.Id;
-
-            // 行数が多いと不安定になるので古いものを削除する
-            while (TimeLineView.Rows.Count > Properties.Settings.Default.MaxLine) {
-                TimeLineView.Rows.RemoveAt(0);
-                if(TimeLineView.FirstDisplayedScrollingRowIndex > 0) {
-                    TimeLineView.FirstDisplayedScrollingRowIndex = TimeLineView.FirstDisplayedScrollingRowIndex - 1;
-                    if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex + 1) {
-                        scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
-                    }
-                }
-                i--;
-            }
-
-            // スクロール位置の調整
-            if (scrollPoint <= TimeLineView.FirstDisplayedScrollingRowIndex) {
-                TimeLineView.FirstDisplayedScrollingRowIndex = i;
-                scrollPoint = TimeLineView.FirstDisplayedScrollingRowIndex - 2;
-            }
-
             // 特定ユーザの場合色を変える
             SetColor(i, item.Account.AccountName);
 
@@ -210,7 +328,6 @@ namespace MstdnCUILike {
 
             // 特定ワードに反応して特定ワードをトゥートする
             TootWord(outputString, item.Account.AccountName);
-
         }
 
         private void TimeLineBox_LinkClicked(object sender, LinkClickedEventArgs e) {
@@ -272,6 +389,9 @@ namespace MstdnCUILike {
         private void ChangeSettings() {
             if (streaming != null) {
                 streaming.Stop();
+            }
+            if (homeStreaming != null) {
+                homeStreaming.Stop();
             }
             hostName = Properties.Settings.Default.HostName;
             mail = Properties.Settings.Default.UserID;
@@ -373,22 +493,27 @@ namespace MstdnCUILike {
             this.gridContextMenu.Items.Clear();
             var target = cell.ToolTipText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             try {
-                // ファボ
-                ToolStripItem tsif = new ToolStripMenuItem();
-                tsif.Text = DefaultValues.CONTEXT_FAV;
-                tsif.Tag = cell.Tag;
-                tsif.MouseDown += Fav_MouseDown;
-                tsif.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.fav.png"));
-                this.gridContextMenu.Items.Add(tsif);
+                // IDがゼロの場合は
+                int id;
+                if (int.TryParse(cell.Tag.ToString(), out id)) {
+                    if (id != 0) {
+                        // ファボ
+                        ToolStripItem tsif = new ToolStripMenuItem();
+                        tsif.Text = DefaultValues.CONTEXT_FAV;
+                        tsif.Tag = cell.Tag;
+                        tsif.MouseDown += Fav_MouseDown;
+                        tsif.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.fav.png"));
+                        this.gridContextMenu.Items.Add(tsif);
 
-                // ブースト
-                ToolStripItem tsib = new ToolStripMenuItem();
-                tsib.Text = DefaultValues.CONTEXT_BOOST;
-                tsib.Tag = cell.Tag;
-                tsib.MouseDown += Boost_MouseDown;
-                tsib.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.boost.png"));
-                this.gridContextMenu.Items.Add(tsib);
-
+                        // ブースト
+                        ToolStripItem tsib = new ToolStripMenuItem();
+                        tsib.Text = DefaultValues.CONTEXT_BOOST;
+                        tsib.Tag = cell.Tag;
+                        tsib.MouseDown += Boost_MouseDown;
+                        tsib.Image = new Bitmap(this.myAssembly.GetManifestResourceStream("MstdnCUILike.Resource.boost.png"));
+                        this.gridContextMenu.Items.Add(tsib);
+                    }
+                }
                 // URLの一覧
                 int i = 0;
                 foreach (var url in target) {

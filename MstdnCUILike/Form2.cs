@@ -18,12 +18,14 @@ namespace MstdnCUILike {
                 ViewTest.ForeColor = Color.White;
                 NameColorSetting.BackColor = Color.Red;
                 SelfColorSetting.BackColor = Color.SkyBlue;
+                NoticeColorSetting.BackColor = Color.Yellow;
             } else {
                 ColorSetting.BackColor = Properties.Settings.Default.BackColorSetting;
                 ViewTest.Font = Properties.Settings.Default.FontSetting;
                 ViewTest.ForeColor = Properties.Settings.Default.FontColorSetting;
                 NameColorSetting.BackColor = Properties.Settings.Default.NameColor;
                 SelfColorSetting.BackColor = Properties.Settings.Default.SelfColor;
+                NoticeColorSetting.BackColor = Properties.Settings.Default.NoticeColor;
             }
             UserId.Text = Properties.Settings.Default.UserID;
             Password.Text = Properties.Settings.Default.UserPass;
@@ -31,6 +33,10 @@ namespace MstdnCUILike {
             MaxLine.Text = Properties.Settings.Default.MaxLine.ToString();
             BaseWord.Text = Properties.Settings.Default.BaseWord;
             TootWord.Text = Properties.Settings.Default.TootWord;
+            FavCheck.Checked = Properties.Settings.Default.NoticeFav;
+            BoostCheck.Checked = Properties.Settings.Default.NoticeBoost;
+            MentionCheck.Checked = Properties.Settings.Default.NoticeMention;
+            FollowCheck.Checked = Properties.Settings.Default.NoticeFollow;
         }
 
         private void Save_Click(object sender, EventArgs e) {
@@ -56,9 +62,13 @@ namespace MstdnCUILike {
             Properties.Settings.Default["MaxLine"] = maxline;
             Properties.Settings.Default["BaseWord"] = BaseWord.Text;
             Properties.Settings.Default["TootWord"] = TootWord.Text;
+            Properties.Settings.Default["NoticeFav"] = FavCheck.Checked;
+            Properties.Settings.Default["NoticeBoost"] = BoostCheck.Checked;
+            Properties.Settings.Default["NoticeMention"] = MentionCheck.Checked;
+            Properties.Settings.Default["NoticeFollow"] = FollowCheck.Checked;
+            Properties.Settings.Default["NoticeColor"] = NoticeColorSetting.BackColor;
             Properties.Settings.Default.Save();
             this.Close();
-
         }
 
         private void FontSetting_Click(object sender, EventArgs e) {
@@ -98,6 +108,16 @@ namespace MstdnCUILike {
                 //選択された色の取得
                 SelfColorSetting.BackColor = SelfColorDialog.Color;
             }
+        }
+
+        private void NoticeColorSetting_Click(object sender, EventArgs e) {
+            NoticeColorDialog.Color = NoticeColorSetting.BackColor;
+            DialogResult cd = NoticeColorDialog.ShowDialog();
+            if (NoticeColorDialog.ShowDialog() == DialogResult.OK) {
+                //選択された色の取得
+                NoticeColorSetting.BackColor = NoticeColorDialog.Color;
+            }
+
         }
     }
 }

@@ -253,13 +253,61 @@ namespace MstdnCUILike.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoticeFav {
             get {
-                return ((string)(this["Setting"]));
+                return ((bool)(this["NoticeFav"]));
             }
             set {
-                this["Setting"] = value;
+                this["NoticeFav"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoticeBoost {
+            get {
+                return ((bool)(this["NoticeBoost"]));
+            }
+            set {
+                this["NoticeBoost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoticeMention {
+            get {
+                return ((bool)(this["NoticeMention"]));
+            }
+            set {
+                this["NoticeMention"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoticeFollow {
+            get {
+                return ((bool)(this["NoticeFollow"]));
+            }
+            set {
+                this["NoticeFollow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Yellow")]
+        public global::System.Drawing.Color NoticeColor {
+            get {
+                return ((global::System.Drawing.Color)(this["NoticeColor"]));
+            }
+            set {
+                this["NoticeColor"] = value;
             }
         }
     }

@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Microsoft.VisualBasic.FileIO;
 
 namespace MstdnCUILike {
     public partial class MstdnCUILike : Form {
@@ -354,6 +355,9 @@ namespace MstdnCUILike {
                     var rtn = fm3.ShowDialog(this);
 
                     SetShortcat();
+                    //CW
+                } else if (InputBox.Text.IndexOf(DefaultValues.CMD_CW) == 0) {
+                    PostSpoiler(InputBox.Text, Visibility.Public);
                 } else {
                     // トゥートする
                     this.PostStatus(InputBox.Text, Visibility.Public);
@@ -456,6 +460,23 @@ namespace MstdnCUILike {
                 var status = client.PostStatus(word, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
                 tootsCounter++;
             }
+        }
+
+        // CWトゥート
+        private void PostSpoiler(string word, Visibility visibility, int? replyStatusId = default(int?), IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) {
+            TextFieldParser parser = new TextFieldParser(new MemoryStream(Encoding.UTF8.GetBytes(word)));
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(" ");
+            var data = parser.ReadFields();
+            
+            if (data.Count() < 3) {
+                return;
+            }
+            if((data[1].Length <= 0) || (data[2].Length <= 0)) {
+                return;
+            }
+
+            this.PostStatus(data[2], visibility, spoilerText: data[1]);
         }
 
         // トゥート処理（画像）

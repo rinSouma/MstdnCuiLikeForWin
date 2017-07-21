@@ -52,6 +52,7 @@ namespace MstdnCUILike {
         public const string CMD_END = ":exit";
         public const string CMD_IMAGE = ":image";
         public const string CMD_SHORTCAT = ":shortcat";
+        public const string CMD_CW = ":cw";
 
         public const string IMAGE_CMD_NSFW = "/nsfw";
         public const string IMAGE_CMD_SOURCE = "/s";

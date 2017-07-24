@@ -486,7 +486,7 @@ namespace MstdnCUILike {
                 if (mc.mediaId == null) {
                     return;
                 }
-                this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive);
+                this.PostStatus(mc.status, Visibility.Public, mediaIds: mc.mediaId, sensitive: mc.sensitive, spoilerText: mc.spoiler);
             } catch (Exception ex) {
                 var i = TimeLineView.Rows.Count;
                 TimeLineView.Rows.Add();

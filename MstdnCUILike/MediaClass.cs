@@ -18,11 +18,13 @@ namespace MstdnCUILike {
         }
         public IEnumerable<int> mediaId { get; set; }
         public bool sensitive { get; set; }
+        public string spoiler;
 
         public MediaClass() {
             // 空白だとメッセージなしトゥートできなかったん
             this.status = DefaultValues.MSG_SPACE;
             this.sensitive = false;
+            this.spoiler = string.Empty;
         }
     }
 }

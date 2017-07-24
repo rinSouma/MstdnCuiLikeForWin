@@ -57,6 +57,7 @@ namespace MstdnCUILike {
         public const string IMAGE_CMD_NSFW = "/nsfw";
         public const string IMAGE_CMD_SOURCE = "/s";
         public const string IMAGE_CMD_STATUS = "/m";
+        public const string IMAGE_CMD_CW = "/w";
 
         public const string IMAGE_CMD_SHORTCUT = CMD_IMAGE + " " + IMAGE_CMD_NSFW + " " + IMAGE_CMD_SOURCE + " \"\" " + IMAGE_CMD_STATUS + " \"\"";
 

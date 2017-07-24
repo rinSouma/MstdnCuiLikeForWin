@@ -17,7 +17,8 @@ namespace MstdnCUILike {
         enum Flg{
             None = 0,
             Source = 1,
-            Status = 2
+            Status = 2,
+            Spoiler = 3
         }
 
         // メディアアップロード処理
@@ -74,12 +75,19 @@ namespace MstdnCUILike {
                     flg = Flg.Status;
                     continue;
                 }
+                if (param == DefaultValues.IMAGE_CMD_CW) {
+                    flg = Flg.Spoiler;
+                    continue;
+                }
                 switch (flg) {
                     case Flg.Source:
                         pathList.Add(param);
                         break;
                     case Flg.Status:
                         mc.status = param + Environment.NewLine;
+                        break;
+                    case Flg.Spoiler:
+                        mc.spoiler = param;
                         break;
                 }
             }

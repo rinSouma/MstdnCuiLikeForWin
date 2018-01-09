@@ -16,7 +16,7 @@ namespace MstdnCUILike {
                 }
             }
         }
-        public IEnumerable<int> mediaId { get; set; }
+        public IEnumerable<long> mediaId { get; set; }
         public bool sensitive { get; set; }
         public string spoiler;
 

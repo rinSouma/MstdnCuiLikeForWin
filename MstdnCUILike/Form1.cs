@@ -84,23 +84,9 @@ namespace MstdnCUILike {
             this.userId = account.AccountName;
 
             // LTL処理
-            streaming = client.GetPublicStreaming();
+            streaming = client.GetLocalStreaming();
             streaming.OnUpdate += (sender, e) => {
-                // 自インスタンスのみを表示の対象にする
-                var uri = e.Status.Uri;
-                var temp = uri.Split(',');
-                uri_list.Clear();
-                foreach (var word in temp) {
-                    var temp2 = word.Split(':');
-                    if (temp2.Length >= 2) {
-                        uri_list.Add(temp2[0], temp2[1]);
-                    }
-                }
-                if (uri_list.ContainsKey(DefaultValues.STREAM_TAG)) {
-                    if (uri_list[DefaultValues.STREAM_TAG] == hostName) {
-                        TextWrite(e.Status);
-                    }
-                }
+                TextWrite(e.Status);
             };
 
             //通知処理
@@ -130,7 +116,7 @@ namespace MstdnCUILike {
             string viewName = item.Account.DisplayName.Replace("\n", "").Replace("\r", "");
             viewName = viewName + "@" + item.Account.AccountName;
             int i = 0;
-            int id = 0;
+            long id = 0;
             string outputText = string.Empty;
             string outputString = string.Empty;
             string linkText = string.Empty;
@@ -259,7 +245,7 @@ namespace MstdnCUILike {
         }
 
         // 出力処理
-        private int WriteConsole(string text, int id) {
+        private int WriteConsole(string text, long id) {
             // 出力
             var i = TimeLineView.Rows.Count;
             TimeLineView.Rows.Add();
@@ -455,7 +441,7 @@ namespace MstdnCUILike {
         }
 
         // トゥート処理
-        private void PostStatus(string word, Visibility visibility, int? replyStatusId = default(int?), IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) {
+        private void PostStatus(string word, Visibility visibility, int? replyStatusId = default(int?), IEnumerable<long> mediaIds = null, bool sensitive = false, string spoilerText = null) {
             if(this.tootsCounter < DefaultValues.TOOTS_PAR_INTERVAL) {
                 var status = client.PostStatus(word, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
                 tootsCounter++;

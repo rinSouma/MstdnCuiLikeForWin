@@ -94,7 +94,7 @@ namespace MstdnCUILike {
             // メディアアップロード
             try {
                 var attachList = await UploadMedia(pathList);
-                var idList = new List<int>();
+                var idList = new List<long>();
                 foreach(Attachment attach in attachList) {
                     idList.Add(attach.Id);
                     mc.status += attach.TextUrl + Environment.NewLine;
